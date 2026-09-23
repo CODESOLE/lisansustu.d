@@ -1,0 +1,856 @@
+# -*- org-confirm-babel-evaluate: nil -*-
+
+               P(A|B)*P(B)
+      P(B|A) = -----------
+                  P(A) = P(A|B)P(B) + P(A|¬B)P(¬B)
+
+SVD:
+  1. Compute V: transpose(A)xA => find eigenvector then normalize it for each eigenvalue. Then V matrix is each normalized eigenvector for each column of V matrix. Then transpose(V)
+
+  2. Compute Sigma(Dimension of Sigma should be min(i, j) of A matrix): sigma1 = sqrt(eigenvalue1), sigma2 = sqrt(eigenvalue2)..
+  Sigma = [[sigma1    0   ]
+           [0      sigma2 ]
+           [0         0   ]]
+
+  3. Compute U: calculate eigenvalue & eigenvector of "A x transpose(A)" => lamda^3-s1lamda^2+s2lamda-s3=0(s1 trace, s2 minor coefficient determinant,
+     s3 det(A x transpose(A)) ), Normalize eigenvectors, Then U matrix is each normalized eigenvector for each column of U matrix.
+
+
+* PROBABILITY
+1. [[file:data/clipboard-20260815T232855.png]]
+2. [[file:data/clipboard-20260815T234054.png]]
+3. [[file:data/clipboard-20260816T000721.png]]
+4. [[file:data/clipboard-20260816T001529.png]]
+5. [[file:data/clipboard-20260816T002602.png]] Connection Between ExpDistribution & PossionProcess
+6. [[file:data/clipboard-20260816T005035.png]]
+7. [[file:data/clipboard-20260816T005219.png]]
+8. [[file:data/clipboard-20260816T005323.png]]
+9. [[file:data/clipboard-20260816T011258.png]]
+10. [[file:data/clipboard-20260816T015122.png]]
+11. [[file:data/clipboard-20260816T020041.png]] Example
+12. [[file:data/clipboard-20260816T021515.png]]
+13. [[file:data/clipboard-20260816T022535.png]]
+14. [[file:data/clipboard-20260816T023350.png]]
+15. [[file:data/clipboard-20260816T024329.png]]
+16. [[file:data/clipboard-20260816T025055.png]]
+17. [[file:data/clipboard-20260816T030733.png]]
+18. [[file:data/clipboard-20260816T032051.png]]
+19. [[file:data/clipboard-20260816T034859.png]]
+20. [[file:data/clipboard-20260816T040044.png]]
+
+* STATISTICS
+1. [[file:data/clipboard-20260811T000159.png]]
+2. [[file:data/clipboard-20260811T000553.png]]
+3. [[file:data/clipboard-20260811T000810.png]]
+4. [[file:data/clipboard-20260811T001443.png]]
+5. [[file:data/clipboard-20260811T024233.png]]
+6. [[file:data/clipboard-20260815T025636.png]]
+7. [[file:data/clipboard-20260815T025812.png]]
+8. [[file:data/clipboard-20260811T171124.png]]
+9. [[file:data/clipboard-20260811T214858.png]]
+10. [[file:data/clipboard-20260812T013443.png]]
+11. [[file:data/clipboard-20260813T001411.png]]
+12. [[file:data/clipboard-20260813T202924.png]]
+13. [[file:data/clipboard-20260814T014003.png]]
+14. [[file:data/clipboard-20260814T155528.png]]
+15. [[file:data/clipboard-20260814T165826.png]]
+16. [[file:data/clipboard-20260814T190531.png]]
+17. [[file:data/clipboard-20260814T195603.png]]
+18. [[file:data/clipboard-20260814T201250.png]]
+19. [[file:data/clipboard-20260814T213541.png]]
+20. [[file:data/clipboard-20260814T230554.png]] sample_variance => s^2 = ***1/(n-1)***
+21. [[file:data/clipboard-20260815T025043.png]]
+22. [[file:data/clipboard-20260815T195139.png]]
+23. [[file:data/clipboard-20260815T210138.png]]
+24. [[file:data/clipboard-20260817T212948.png]]
+25. [[file:data/clipboard-20260818T025202.png]]
+26. [[file:data/clipboard-20260818T040610.png]]
+27. [[file:data/clipboard-20260818T044542.png]]
+28. [[file:data/clipboard-20260818T054550.png]]
+
+* Triplet Loss
+
+(Anchor, Positve, Negative)
+
+$$\mathcal{L}=\max(0, d_{AP} - d_{AN} + m)$$
+
+Anchor Postive, Anchor Negative
+Loss is zero iff Negative at least m distance away than Positve is.
+
+* Contrastive Loss
+$$\mathcal{L}=yd^2+(1-y)\max(0, m-d)$$
+
+where m is margin to prevent arbitrary large distances.y=0 if not belong to any class and vice versa.
+y acts as a switch. It only accounts for 2 class unlike 3 in Triplet Loss
+
+* Dirichlet Distribution
+Dirichlet is more general from of Beta distribution, instead of alpha, beta, it is n => 3.
+
+[[file:data/clipboard-20260904T164036.png]] NOTE: numerator is alpha - 1 not alpha - k. Because otherwise sum of probabilities is not 1.
+
+$$\mathbb{E}(P_i)=\frac{\alpha_i}{\alpha}=\frac{n_i+1}{n+K}\rightarrow\frac{n_i}{n}\rightarrow\hat{P_i}$$
+$$mode(P_i) = \frac{\alpha_i-1}{\alpha-K}=\frac{n_i}{n}$$
+$$Var(P_i)=\frac{\left(\frac{\alpha_i}{\alpha}\right)\left(1-\frac{\alpha_i}{\alpha}\right)}{\alpha+1}$$
+
+* Spearman Correlation
+[[file:data/clipboard-20260904T005904.png]]
+
+Spearman correlation is just classic pearson correlation however instead of raw values we look and calculate over **ranks**
+Spearman dont care whether relationship linear/nonlinear only look for relative positions of values.
+
+* Matrix Norm
+[[file:data/clipboard-20260904T000549.png]]
+
+Eigenvectors of Symmetric Matrices are **Orthogonal**
+
+* Categorical Distribution
+Think as Bernoulli with multiple categories. One sample but multiple consequences. Parameterized with k which is category count.
+Bernoulli is special case of Categorical Distribution.
+
+$$(P_a, P_b, ...),\, \text{such that} \sum P_i = 1$$
+$$P(X=i) = P_i$$
+
+[[file:data/clipboard-20260903T213839.png]]
+[[file:data/clipboard-20260903T214839.png]]
+
+* Beta Distribution
+$$\sigma(P_R) = \sqrt{\frac{P_R(1-P_R)}{n}}$$
+
+[[file:data/clipboard-20260903T203308.png]]
+
+* KL Divergence
+$$\mathbb{D}_{KL}(P||Q)=\sum_{x}P(x)\log{\frac{P(x)}{Q(x)}}$$
+
+* Multicolinearity
+Multicolinearity affects fit a regression line when not each variable independent.
+One solution calculating correlation matrix and check values bigger than 0.9. However not roboust
+Instead use VIF(Variance Inflation Factor):
+[[file:data/clipboard-20260820T224757.png]]
+[[file:data/clipboard-20260820T225400.png]] That means X3 redundant variable
+
+* Bias and Variance
+Bias -> how well model fit into training data (aka. true relationship between features)
+Variance -> how well model predicts against test data. Consistent predictions across the different datasets
+Ideally we want low bias and low variance/variability for future unseen datasets
+There are 3 common used methods for achieving this via regularization, boosting and bagging.
+
+* Entropy
+Entropy = E(surprise) expected surprise = 1 equal quantities in a dataset, lower more inbalance between quantities in a dataset
+
+$$H(s) = \sum_{i=0}^N P(\mathbf{X}=x_i)\cdot\log_2\left(\frac{1}{P(\mathbf{X}=x_i)}\right)$$
+
+* Information Gain
+[[file:data/clipboard-20260823T000212.png]]
+
+* Mutual Information
+$$\text{Mutual Information} = \sum_x \sum_y P(X, Y) \cdot \ln\left(\frac{P(X, Y)}{P(\mathbf{X}=x_i) \cdot P(\mathbf{Y}=y_j))}\right)$$
+[[file:data/clipboard-20260820T191029.png]]
+
+* R^2
+$$R^2 = \frac{Var(\text{Mean of Feature}) - Var(\text{fittedline of Feature})}{Var(\text{Mean of Feature})}$$
+
+R^2 means fittedline for example 0.44(44 percentage) has less SSR compared to mean of just one feature mean.
+R^2 quantifies the accuracy of our prediction with the model (eg. Linear regression, logisticreg...etc.)
+Sometimes only R^2 just itself not enough because other random feature with target feature may exhibit same accuracy
+therefore calculating p-value adds extra confidence to our model.
+
+[[file:data/clipboard-20260821T005325.png]]
+[[file:data/clipboard-20260821T005559.png]]
+[[file:data/clipboard-20260821T005659.png]] 0.44 is coming from the original data and original R^2 value
+[[file:data/clipboard-20260821T005857.png]]
+[[file:data/clipboard-20260821T005912.png]]
+
+* Accuracy %99 but dataset (imbalanced) => F1-Score, ROC(Receiver Operating Characteristic Curve) / AUC(Area Under ROC Curve)
+ROC and AUC summarizes Confusion Matrices:
+
+[[file:data/clipboard-20260819T033519.png]]
+
+ROC developed in military to asses how well radar perform. You want upper left corner as much as possible
+
+[[file:data/clipboard-20260819T023542.png]]
+
+AUC used for comparing different models, we compare ROC curves of different models. We want bigger area under ROC curve.
+
+[[file:data/clipboard-20260819T023947.png]]
+
+Very imbalanced dataset (eg. rare disease) ROC/AUC not that better, use Precision-Recall(Sensitivity) Curve instead.
+
+[[file:data/clipboard-20260819T031408.png]] Attention: Recall/Sensitivity axis inverted, not same
+
+* PCA                                                                :ATTACH:
+[[file:data/clipboard-20260821T233426.png]] one axis for most variance and second axis for second most variance of ellipsoid
+[[file:data/clipboard-20260822T154302.png]] First find center of mass then shift it to origin. Then minimize projection dist. or maximize distance between projected point same thing.
+[[file:data/clipboard-20260822T154450.png]]
+[[file:data/clipboard-20260822T154746.png]]
+[[file:data/clipboard-20260822T155039.png]] as you rotate line to maximize SS(distances)
+[[file:data/clipboard-20260822T155224.png]]
+[[file:data/clipboard-20260822T162736.png]] Mathematicians call this linear combination of Gene 1 and Gene 2(PC1 linear combination of Gene1/2)
+[[file:data/clipboard-20260822T163314.png]] Divide each component of vector with length to get unit eigen vector direction (1/4.12, 4/4.12)
+[[file:data/clipboard-20260822T164009.png]] 0.97 of Gene1 and 0.242 of Gene2 called Loading Scores
+[[file:data/clipboard-20260822T164643.png]]
+[[file:data/clipboard-20260822T164725.png]]
+[[file:data/clipboard-20260822T164824.png]]
+[[file:data/clipboard-20260822T164835.png]] This is PC2 and corresponding component vectors called loading scores for PC2
+[[file:data/clipboard-20260822T165015.png]]
+[[file:data/clipboard-20260822T165102.png]] After finding PC1/2 and rotate to PC1 horizontal. Then we use projected points to find where samples go in PC axis
+[[file:data/clipboard-20260822T165619.png]] Same logic PC2 responsible for total variation with 3/18 = 0.17 = 17%
+[[file:data/clipboard-20260822T172049.png]]
+
+* Lagrange Multiplier => L(x, y, λ) = f(x, y) - λg(x, y) , g(x); constraint
+[[file:data/clipboard-20260823T041047.png]] [[file:data/clipboard-20260823T041122.png]] [[file:data/clipboard-20260823T041306.png]]
+
+* ANOVA(Analysis of Variances)
+
+* CrossEntropy
+[[file:data/clipboard-20260824T153245.png]]
+
+[[file:data/clipboard-20260824T161932.png]] If it predicts y^=0.1, y^​=0.1: L=−log⁡(0.1)≈2.303 L=−log(0.1)≈2.303
+
+So cross-entropy is equivalent to the negative log-likelihood for probabilistic classification models.
+
+* Random Forest
+To create a bootstrapped dataset that is the same size as the original, we just randomly select samples from the original dataset.
+The important detail is that we’re allowed to pick the same sample more than once. Choose optimal number of Randomly selected features (eg.2)
+
+[[file:data/clipboard-20260824T024048.png]]
+
+the same feature (or variable) can be selected multiple times in a tree. Every time we select a subset of features to choose from,
+we choose from the full list of features, even if we have already used some of those features.
+Thus, a single feature can appear multiple times in a tree.
+
+[[file:data/clipboard-20260824T024129.png]] Do this 100s of times
+
+Then choose random patient measure according to features and compare it to the first bootstrapped tree and record result
+
+[[file:data/clipboard-20260824T024500.png]] then repeat this for all decisiontree that we bootstrapped and record results of all.
+
+Then at the end of the repetition conclude with the most voted option. This procedur(bootstraping & aggregate to make decision called bagging)
+To evaluate the correctness of decisiontree use out-of-bag samples (aka. not chosen samples when we randomly bootstraping).
+Record all conculuded results of out-of-bag samples and incorrect portion of out-of-bag samples called ***out-of-bag error***
+
+[[file:data/clipboard-20260824T025416.png]] Typically, we start by using the square of the number of variables and then try a few settings above and below that value.
+[[file:data/clipboard-20260824T030825.png]]
+
+* CrossValidation (K-Fold CrossValidation)
+if K=4 then %75 of data trained then %25 of data tested. This 25% section shifted across the data and sum all correct vs incorrect metrics
+and compare them for each ML model. It's common to use 10-Fold CV.
+[[file:data/clipboard-20260823T024310.png]]
+
+* LinearReg
+$$m = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}$$
+$$b = \bar{y} - m\bar{x}$$
+$$MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+
+* LogisticReg
+$$z = w^T x + b$$
+$$\sigma(z) = \frac{1}{1 + e^{-z}}$$
+
+* KNN K=n
+$$d_{Euclid}(p, q) = \sqrt{\sum_{i=1}^{n} (q_i - p_i)^2}$$
+$$d_{Manhattan}(p, q) = \sum_{i=1}^{n} \vert{}q_i - p_i\vert{}$$
+
+* KMeanCluster (Centroid)
+See code [[kmc-knn][demo]]
+
+* SVM
+[[file:data/clipboard-20260824T003140.png]]
+
+n-dimension data -> n - 1 seperator(aka. hyperplane)
+if data inseperable(intertwined together) transform data so that make it seperable (eg. square dataset) then optimize for hyperplane
+[[file:data/clipboard-20260821T170536.png]]
+[[file:data/clipboard-20260821T190944.png]]
+[[file:data/clipboard-20260821T191045.png]]
+[[file:data/clipboard-20260821T191112.png]]
+[[file:data/clipboard-20260821T191304.png]]
+[[file:data/clipboard-20260821T192051.png]] This trick, calculating the high-dimensional relationships without actually transforming the data to the higher dimension, is called The Kernel Trick.
+
+a and b 2 different observation in datasets, r is coefficient of polynomial, d sets the degree of polynomial
+
+$$Polynomial Kernel = (a \times b + r)^d$$
+
+[[file:data/clipboard-20260821T193627.png]]
+[[file:data/clipboard-20260821T193804.png]]
+[[file:data/clipboard-20260821T193837.png]]
+[[file:data/clipboard-20260821T194013.png]]
+[[file:data/clipboard-20260821T194622.png]]
+[[file:data/clipboard-20260821T194939.png]] we can ignore z axis because it is constant value
+
+
+
+[[file:data/clipboard-20260821T195158.png]]
+[[file:data/clipboard-20260821T195218.png]]
+
+Alternatively
+
+[[file:data/clipboard-20260821T194155.png]]
+
+r and d are deternmined via Cross Validation method
+
+RBF (Radial Kernel) work in infinite dimension
+a and b 2 different data point in datasets, gamma determined via CrossValidation
+
+$$e^{\gamma(a-b)^2}$$
+$$e^{-\frac{1}{2}(a-b)^2} = \left(s,\, s\sqrt{\frac{1}{1!}}\,a,\, s\sqrt{\frac{1}{2!}}\,a^2,\, \ldots,\, s\sqrt{\frac{1}{\infty!}}\,a^\infty \right) \cdot \left(s,\, s\sqrt{\frac{1}{1!}}\,b,\, s\sqrt{\frac{1}{2!}}\,b^2,\, \ldots,\, s\sqrt{\frac{1}{\infty!}}\,b^\infty \right)$$
+
+Relationship between RBF & polynomial kernels
+
+[[file:data/clipboard-20260821T223622.png]]
+
+* Gini Index
+$$Gini(S) = 1 - \sum_{i=1}^{c} p_i^2$$
+
+* Least Square Sum
+$$LSS = \sum (y_i - \hat{y})^2$$
+
+* Confusion Matrix
+FP => Type I Error/False Alarm
+FN => Type II Error
+
+[[file:data/clipboard-20260819T033519.png]]
+[[file:data/clipboard-20260819T021914.png]]
+
+** Accuracy
+$$\frac{TP + TN}{TN + FN + TP + FP}$$
+
+** Precision
+$$\frac{TP}{TP + FP}$$
+
+** Recall/Sensitivity
+$$\frac{TP}{TP + FN}$$
+
+** F1-Score - Accuracy %99 but dataset imbalanced
+$$2 \times \frac{Precision \times Recall}{Precision + Recall}$$
+
+[[file:data/clipboard-20260819T220035.png]]
+
+* Decision Tree (eg. Root Nodes etc.)
+When a decision tree classifies things into categories discrete/yes_no it's called a **Classification Tree**
+When a decision tree predicts numeric values it's called a **Regression Tree**
+Consist of Root Node and Internal Nodes or Branches. Terminal Nodes called Leaf Nodes
+Impurity test is done for choosing best root node to start with(after choosing target 'feature')
+[[file:data/clipboard-20260819T222348.png]]
+[[file:data/clipboard-20260819T224143.png]]
+[[file:data/clipboard-20260819T231536.png]] Gini Impurity for LovesPopcorn is 0.405
+
+For numeric values sort feature then calculate avg. of 2 adjacent value then calculate GiniIm.4all then choose lowest one.If there is 2 lowest pick one of them.
+[[file:data/clipboard-20260819T232053.png]]
+[[file:data/clipboard-20260819T234950.png]]
+[[file:data/clipboard-20260819T235135.png]] After all of them choose feature that has the lowest Gini Impurity
+Then continue with branching
+
+Regression DecisionTree
+[[file:data/clipboard-20260820T155031.png]]
+Choose threshold by slidign threshold and calculate sum of squared residuals.
+To prevent overfitting data, dont split data so granular, set a group size for typically each leaf node should have max. 7 datapoints.
+[[file:data/clipboard-20260820T161329.png]]
+[[file:data/clipboard-20260820T161509.png]] Pick the lowest SSR one.
+
+* L1/L2 Regularization
+[[file:data/20260919_203312_grim.png]] ElasticNet Regression is just linear mixture of lasso and ridge regression.
+[[file:data/clipboard-20260821T012220.png]] L2(Ridge) Regression
+[[file:data/clipboard-20260821T012455.png]] but it return for that small bias, we get a significant drop in **Variance**. In other word, by starting with slightly worse fit, Ridge Regression can provide better long term predictions.
+[[file:data/clipboard-20260821T013051.png]] m^2 adds penalty to LeastSquare method, λ determines how severe that penalty is.
+[[file:data/clipboard-20260821T013827.png]]
+[[file:data/clipboard-20260821T013921.png]]
+[[file:data/clipboard-20260821T014732.png]]
+[[file:data/clipboard-20260821T014955.png]] In general, RidgeReg penalty contains all parameters except y-intercept
+[[file:data/clipboard-20260821T015206.png]]
+[[file:data/clipboard-20260821T015216.png]]
+[[file:data/clipboard-20260821T020023.png]] for 10K gene expres. we need 10K data points but with RidgeRegPenalty we can generalize for bigger datasets that we cannot reach because of time consuming/expensive
+[[file:data/clipboard-20260821T020404.png]]
+
+ - L1 Lasso Regression
+[[file:data/clipboard-20260822T030730.png]]
+[[file:data/clipboard-20260822T030814.png]]
+[[file:data/clipboard-20260822T031010.png]] **BIG DIFFERENCE**
+
+LassoReg is better than RidgeReg when we have lotsof useless variables, it disables them. Reduce variances in datasets w/ lotsof useless vars.
+However when we have concise bunch of mostly useful dataset then RidgeReg is better.
+
+* Code
+#+NAME: bayesian-inference
+#+BEGIN_SRC python :results output
+# Simple example where we have two hypotheses
+import numpy as np
+
+# Prior probabilities for fair (H1) and biased (H2) coin
+P_H1 = 0.5  # Prior for H1: Coin is fair
+P_H2 = 0.5  # Prior for H2: Coin is biased (P(Heads) = 0.7)
+
+# Likelihood of the data (coin flip result) under each hypothesis
+def likelihood(data, hypothesis):
+    if hypothesis == "H1":  # Fair coin
+        return 0.5
+    elif hypothesis == "H2":  # Biased coin
+        return 0.7 if data == 'H' else 0.3
+
+# Update beliefs using Bayes' Theorem
+def bayesian_update(prior_H1, prior_H2, data):
+    # Likelihoods
+    likelihood_H1 = likelihood(data, "H1")
+    likelihood_H2 = likelihood(data, "H2")
+
+    # Total evidence P(D)
+    P_data = likelihood_H1 * prior_H1 + likelihood_H2 * prior_H2
+
+    # Posterior for H1 (fair coin)
+    posterior_H1 = (likelihood_H1 * prior_H1) / P_data
+
+    # Posterior for H2 (biased coin)
+    posterior_H2 = (likelihood_H2 * prior_H2) / P_data
+
+    return posterior_H1, posterior_H2
+
+# Simulate a series of coin flips
+# coin_flips = ['H', 'T', 'H', 'H', 'T'] # Example sequence of flips
+# Generate 100 random coin flips (1 for heads, 0 for tails)
+coin_flips = np.random.choice(['T', 'H'], size=20)
+
+P_H1_posterior = P_H1
+P_H2_posterior = P_H2
+
+# Perform Bayesian updates after each flip
+for flip in coin_flips:
+    P_H1_posterior, P_H2_posterior = bayesian_update(P_H1_posterior, P_H2_posterior, flip)
+    print(f"After observing {flip}: P(H1 | Data) = {P_H1_posterior:.4f}, P(H2 | Data) = {P_H2_posterior:.4f}")
+#+END_SRC
+
+#+RESULTS: bayesian-inference
+#+begin_example
+After observing H: P(H1 | Data) = 0.4167, P(H2 | Data) = 0.5833
+After observing H: P(H1 | Data) = 0.3378, P(H2 | Data) = 0.6622
+After observing T: P(H1 | Data) = 0.4596, P(H2 | Data) = 0.5404
+After observing T: P(H1 | Data) = 0.5863, P(H2 | Data) = 0.4137
+After observing H: P(H1 | Data) = 0.5031, P(H2 | Data) = 0.4969
+After observing H: P(H1 | Data) = 0.4196, P(H2 | Data) = 0.5804
+After observing T: P(H1 | Data) = 0.5465, P(H2 | Data) = 0.4535
+After observing T: P(H1 | Data) = 0.6676, P(H2 | Data) = 0.3324
+After observing T: P(H1 | Data) = 0.7700, P(H2 | Data) = 0.2300
+After observing T: P(H1 | Data) = 0.8480, P(H2 | Data) = 0.1520
+After observing T: P(H1 | Data) = 0.9029, P(H2 | Data) = 0.0971
+After observing H: P(H1 | Data) = 0.8691, P(H2 | Data) = 0.1309
+After observing H: P(H1 | Data) = 0.8259, P(H2 | Data) = 0.1741
+After observing T: P(H1 | Data) = 0.8877, P(H2 | Data) = 0.1123
+After observing H: P(H1 | Data) = 0.8496, P(H2 | Data) = 0.1504
+After observing T: P(H1 | Data) = 0.9040, P(H2 | Data) = 0.0960
+After observing T: P(H1 | Data) = 0.9401, P(H2 | Data) = 0.0599
+After observing H: P(H1 | Data) = 0.9181, P(H2 | Data) = 0.0819
+After observing T: P(H1 | Data) = 0.9492, P(H2 | Data) = 0.0508
+After observing T: P(H1 | Data) = 0.9689, P(H2 | Data) = 0.0311
+#+end_example
+
+#+NAME: monte-carlo-parameter-estimation
+#+BEGIN_SRC python :results output
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import poisson
+# Data
+ClicksPerTenSeconds = np.arange(18)  # Number of counts per 10-second interval
+ObservedCounts = [1, 6, 11, 28, 56, 105, 126, 146, 164, 161, 123, 101, 74, 53, 23, 15, 9, 5]
+
+plt.style.use('dark_background')
+# Calculate the sample mean (initial estimate of lambda)
+sample_mean = np.average(ClicksPerTenSeconds, weights=ObservedCounts)
+# Number of bootstrap samples
+num_bootstrap = 1000
+bootstrap_lambdas = []
+# Bootstrap procedure
+for _ in range(num_bootstrap):
+    # Generate a synthetic dataset using the estimated lambda
+    synthetic_data = np.random.poisson(lam=sample_mean, size=np.sum(ObservedCounts))
+
+    # Bin the synthetic data to match the observed format (number of counts per 10-second interval)
+    synthetic_hist, _ = np.histogram(synthetic_data, bins=np.arange(19))
+
+    # Calculate the new lambda estimate from the synthetic data
+    new_lambda = np.average(ClicksPerTenSeconds, weights=synthetic_hist)
+
+    # Store the new lambda estimate
+    bootstrap_lambdas.append(new_lambda)
+# Plot the distribution of bootstrap lambda estimates
+plt.figure(figsize=(10, 6))
+plt.hist(bootstrap_lambdas, bins=30, color='green', edgecolor='black', alpha=0.7)
+plt.title('Bootstrap Distribution of Lambda Estimates', fontsize=14)
+plt.xlabel('Lambda Estimate', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+plt.grid(True)
+# Calculate the sample mean
+sample_mean = np.average(ClicksPerTenSeconds, weights=ObservedCounts)
+# Fit a Poisson distribution using the sample mean as lambda (rate parameter)
+poisson_dist = poisson.pmf(ClicksPerTenSeconds, mu=sample_mean) * np.sum(ObservedCounts)
+# Plotting the observed data
+plt.figure(figsize=(10, 6))
+plt.plot(ClicksPerTenSeconds, ObservedCounts, marker='o', linestyle='-', color='blue', label='Observed Counts')
+# Plot the Poisson distribution
+plt.plot(ClicksPerTenSeconds, poisson_dist, marker='x', linestyle='--', color='red', label='Poisson Fit')
+# Adding labels and title
+plt.title('Observed Alpha Particle Emissions per 10-Second Interval', fontsize=14)
+plt.xlabel('Number of Clicks per 10-Second Interval', fontsize=12)
+plt.ylabel('Observed Count', fontsize=12)
+plt.grid(True)
+plt.legend()
+# Set x-axis to display integer tick marks only
+plt.xticks(ticks=np.arange(0, max(ClicksPerTenSeconds)+1, 1))  # Set x-axis ticks to integers
+# Show the plot
+plt.show()
+#+END_SRC
+
+#+RESULTS: monte-carlo-parameter-estimation
+
+#+NAME: llsq-mle-bayesian-maximum-aposterior-estimation
+#+BEGIN_SRC python :results output
+# Linear Least Squares Estimation
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import minimize
+
+# Set seed for reproducibility
+np.random.seed(45)
+
+# Parameters
+true_a = 2 / 3
+true_b = 0
+sigma_noise = 1  # Standard deviation of Gaussian noise
+
+# Generate random x values and corresponding y values with Gaussian noise
+n_points = 20
+x = np.random.uniform(0, 5, n_points)
+noise = np.random.normal(0, sigma_noise, n_points)
+y = true_a * x + true_b + noise
+y[19] = y[19] + 3
+
+# Plot the generated data
+plt.scatter(x, y, label="Data points", color="blue")
+plt.plot(x, true_a * x + true_b, label="True line: y=2/3x", color="green")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Generated Data with Noise")
+plt.legend()
+plt.show()
+
+A = np.vstack([x, np.ones(len(x))]).T
+theta_lsq, _, _, _ = np.linalg.lstsq(A, y, rcond=None)
+
+# Maximum Likelihood Estimation (MLE)
+def negative_log_likelihood(theta):
+    a, b = theta
+    y_pred = a * x + b
+    residuals = y - y_pred
+    return np.sum(residuals**2) / (2 * sigma_noise**2)
+
+theta_mle = minimize(negative_log_likelihood, [1, 1]).x
+
+# Bayesian Maximum A Posteriori (MAP) Estimation with Prior on b
+# Prior: b ~ N(0, sigma_prior^2) where sigma_prior is a small value
+sigma_prior_b = 0.01  # Strength of the prior on b
+def negative_log_posterior(theta):
+    a, b = theta
+    log_prior_b = -0.5 * (b**2 / sigma_prior_b**2)  # Gaussian prior on b
+    return negative_log_likelihood(theta) - log_prior_b
+
+theta_map = minimize(negative_log_posterior, [1, 1]).x
+# Plot the estimated lines
+plt.scatter(x, y, label="Data points", color="blue")
+plt.plot(x, true_a * x + true_b, label="True line: y=2/3x", color="green")
+plt.plot(x, theta_lsq[0] * x + theta_lsq[1], label="Least Squares", color="yellow")
+plt.plot(x, theta_mle[0] * x + theta_mle[1], label="MLE", color="orange")
+plt.plot(x, theta_map[0] * x + theta_map[1], label="MAP", color="purple")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Comparison of Estimations")
+plt.legend()
+plt.show()
+#+END_SRC
+
+#+RESULTS: llsq-mle-bayesian-maximum-aposterior-estimation
+
+#+NAME: kmc-knn
+#+BEGIN_SRC python :results output
+  import random
+  import math
+  from collections import Counter
+
+
+  # -------------------------
+  # Shared utility functions
+  # -------------------------
+
+  def squared_euclidean_distance(a, b):
+      """Return the squared Euclidean distance between two vectors."""
+      if len(a) != len(b):
+          raise ValueError("Vectors must have the same number of dimensions.")
+
+      return sum((x - y) ** 2 for x, y in zip(a, b))
+
+
+  def euclidean_distance(a, b):
+      return math.sqrt(squared_euclidean_distance(a, b))
+
+
+  # -------------------------
+  # K-Means Clustering
+  # -------------------------
+
+  class KMeans:
+      def __init__(self, n_clusters, max_iterations=100, tolerance=1e-4,
+                   random_state=None):
+          if n_clusters <= 0:
+              raise ValueError("n_clusters must be greater than zero.")
+
+          self.n_clusters = n_clusters
+          self.max_iterations = max_iterations
+          self.tolerance = tolerance
+          self.random_state = random_state
+
+          self.centroids = []
+          self.labels = []
+
+      def _validate_data(self, X):
+          if not X:
+              raise ValueError("X cannot be empty.")
+
+          dimensions = len(X[0])
+
+          if dimensions == 0:
+              raise ValueError("Data points must have at least one dimension.")
+
+          for point in X:
+              if len(point) != dimensions:
+                  raise ValueError("All points must have the same number of dimensions.")
+
+      def _initialize_centroids(self, X):
+          if self.n_clusters > len(X):
+              raise ValueError("n_clusters cannot be greater than the number of samples.")
+
+          rng = random.Random(self.random_state)
+
+          # Choose distinct random points as initial centroids
+          indices = rng.sample(range(len(X)), self.n_clusters)
+          return [list(X[i]) for i in indices]
+
+      def _assign_clusters(self, X, centroids):
+          labels = []
+
+          for point in X:
+              distances = [
+                  squared_euclidean_distance(point, centroid)
+                  for centroid in centroids
+              ]
+
+              nearest_cluster = distances.index(min(distances))
+              labels.append(nearest_cluster)
+
+          return labels
+
+      def _recalculate_centroids(self, X, labels, old_centroids):
+          dimensions = len(X[0])
+          new_centroids = []
+
+          for cluster_id in range(self.n_clusters):
+              cluster_points = [
+                  X[i] for i in range(len(X))
+                  if labels[i] == cluster_id
+              ]
+
+              if not cluster_points:
+                  # Keep the previous centroid if the cluster is empty
+                  new_centroids.append(old_centroids[cluster_id])
+                  continue
+
+              centroid = [
+                  sum(point[dimension] for point in cluster_points)
+                  / len(cluster_points)
+                  for dimension in range(dimensions)
+              ]
+
+              new_centroids.append(centroid)
+
+          return new_centroids
+
+      def fit(self, X):
+          self._validate_data(X)
+
+          centroids = self._initialize_centroids(X)
+
+          for _ in range(self.max_iterations):
+              labels = self._assign_clusters(X, centroids)
+              new_centroids = self._recalculate_centroids(
+                  X, labels, centroids
+              )
+
+              centroid_shift = max(
+                  euclidean_distance(old, new)
+                  for old, new in zip(centroids, new_centroids)
+              )
+
+              centroids = new_centroids
+
+              if centroid_shift <= self.tolerance:
+                  break
+
+          self.centroids = centroids
+          self.labels = self._assign_clusters(X, self.centroids)
+
+          return self
+
+      def predict(self, X):
+          if not self.centroids:
+              raise RuntimeError("Call fit() before predict().")
+
+          return self._assign_clusters(X, self.centroids)
+
+      def fit_predict(self, X):
+          self.fit(X)
+          return self.labels
+
+
+  # -------------------------
+  # K-Nearest Neighbors
+  # -------------------------
+
+  class KNN:
+      def __init__(self, k=3):
+          if k <= 0:
+              raise ValueError("k must be greater than zero.")
+
+          self.k = k
+          self.X_train = []
+          self.y_train = []
+
+      def fit(self, X, y):
+          if not X:
+              raise ValueError("X cannot be empty.")
+
+          if len(X) != len(y):
+              raise ValueError("X and y must contain the same number of samples.")
+
+          dimensions = len(X[0])
+
+          for point in X:
+              if len(point) != dimensions:
+                  raise ValueError("All points must have the same number of dimensions.")
+
+          if self.k > len(X):
+              raise ValueError("k cannot be greater than the number of training samples.")
+
+          self.X_train = [list(point) for point in X]
+          self.y_train = list(y)
+
+          return self
+
+      def _nearest_neighbors(self, point):
+          distances = []
+
+          for train_point, label in zip(self.X_train, self.y_train):
+              distance = squared_euclidean_distance(point, train_point)
+              distances.append((distance, label))
+
+          distances.sort(key=lambda item: item[0])
+
+          return distances[:self.k]
+
+      def _vote(self, neighbors):
+          labels = [label for _, label in neighbors]
+          counts = Counter(labels)
+
+          highest_count = max(counts.values())
+
+          # Resolve ties by choosing the label of the closest tied neighbor
+          tied_labels = {
+              label for label, count in counts.items()
+              if count == highest_count
+          }
+
+          for _, label in neighbors:
+              if label in tied_labels:
+                  return label
+
+      def predict_one(self, point):
+          if not self.X_train:
+              raise RuntimeError("Call fit() before predict().")
+
+          neighbors = self._nearest_neighbors(point)
+          return self._vote(neighbors)
+
+      def predict(self, X):
+          return [self.predict_one(point) for point in X]
+  # -------------------------
+  # K-Means example
+  # -------------------------
+
+  data = [
+      [1, 2],
+      [1, 3],
+      [2, 2],
+      [8, 8],
+      [9, 8],
+      [8, 9],
+  ]
+
+  kmeans = KMeans(
+      n_clusters=2,
+      max_iterations=100,
+      random_state=42
+  )
+
+  cluster_labels = kmeans.fit_predict(data)
+
+  print("K-Means labels:")
+  print(cluster_labels)
+
+  print("K-Means centroids:")
+  print(kmeans.centroids)
+
+  new_points = [
+      [2, 3],
+      [10, 10],
+  ]
+
+  print("Predicted clusters:")
+  print(kmeans.predict(new_points))
+
+
+  # -------------------------
+  # KNN example
+  # -------------------------
+
+  X_train = [
+      [1, 1],
+      [1, 2],
+      [2, 1],
+      [8, 8],
+      [8, 9],
+      [9, 8],
+  ]
+
+  y_train = [
+      "A",
+      "A",
+      "A",
+      "B",
+      "B",
+      "B",
+  ]
+
+  knn = KNN(k=3)
+  knn.fit(X_train, y_train)
+
+  X_test = [
+      [2, 2],
+      [9, 9],
+  ]
+
+  print("KNN predictions:")
+  print(knn.predict(X_test))
+
+#+END_SRC
+
+#+RESULTS: kmc-knn
+: K-Means labels:
+: [1, 1, 1, 0, 0, 0]
+: K-Means centroids:
+: [[8.333333333333334, 8.333333333333334], [1.3333333333333333, 2.3333333333333335]]
+: Predicted clusters:
+: [1, 0]
+: KNN predictions:
+: ['A', 'B']
