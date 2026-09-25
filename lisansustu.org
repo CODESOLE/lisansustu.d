@@ -146,6 +146,13 @@ $$H(s) = \sum_{i=0}^N P(\mathbf{X}=x_i)\cdot\log_2\left(\frac{1}{P(\mathbf{X}=x_
 $$\text{Mutual Information} = \sum_x \sum_y P(X, Y) \cdot \ln\left(\frac{P(X, Y)}{P(\mathbf{X}=x_i) \cdot P(\mathbf{Y}=y_j))}\right)$$
 [[file:data/clipboard-20260820T191029.png]]
 
+* Odds Ratio
+$$\log(\frac{p}{1-p})$$
+
+log makes it symmetric and more interpretable.
+
+[[file:data/20260925_235319_grim.png]]
+
 * R^2
 $$R^2 = \frac{Var(\text{Mean of Feature}) - Var(\text{fittedline of Feature})}{Var(\text{Mean of Feature})}$$
 
