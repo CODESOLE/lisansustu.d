@@ -153,6 +153,13 @@ log makes it symmetric and more interpretable.
 
 [[file:data/20260925_235319_grim.png]]
 
+But only odds ratio is not enough to determine whether the result is statistically significant or not
+there generally 3 test to test this:
+
+** Fischer's Exact Test
+** Chi-Square Test
+** The Wald Test
+
 * R^2
 $$R^2 = \frac{Var(\text{Mean of Feature}) - Var(\text{fittedline of Feature})}{Var(\text{Mean of Feature})}$$
 
