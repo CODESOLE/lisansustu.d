@@ -1,6 +1,6 @@
 ## install.packages("faraway") nolint
 ## install.packages("scatterplot3d") nolint
-install.packages("plotly")
+## install.packages("plotly") nolint
 
 library(scatterplot3d)
 library(faraway)
@@ -136,3 +136,7 @@ solve(t(x) %*% x, t(x) %*% y)
 sqrt(sum(gfit$res^2) / (30 - 6))
 sqrt(diag(xtxi)) * 60.975
 1 - sum(gfit$res^2) / sum((y - mean(y))^2)
+
+vec <- c(1, 2, 3)
+sum(vec)^2
+sum(sapply(vec, function(x) x^2))

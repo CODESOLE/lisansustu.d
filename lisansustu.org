@@ -161,7 +161,7 @@ there generally 3 test to test this:
 ** The Wald Test
 
 * R^2
-$$R^2 = \frac{Var(\text{Mean of Feature}) - Var(\text{fittedline of Feature})}{Var(\text{Mean of Feature})}$$
+$$R^2 = \frac{SSR(\text{Mean of Feature}) - SSR(\text{fittedline of Feature})}{SSR(\text{Mean of Feature})}$$
 
 R^2 means fittedline for example 0.44(44 percentage) has less SSR compared to mean of just one feature mean.
 R^2 quantifies the accuracy of our prediction with the model (eg. Linear regression, logisticreg...etc.)
