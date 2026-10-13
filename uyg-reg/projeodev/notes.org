@@ -1,0 +1,88 @@
+#+TITLE: Statistical Methods & Modeling Discussion
+#+AUTHOR: User & AI Collaborator
+#+DATE: [2026-10-14 Wed]
+#+OPTIONS: toc:nil num:t
+
+* Dimensionality Reduction: PLS vs. PCR
+** Overview
+Both *Principal Component Regression (PCR)* and *Partial Least Squares (PLS)* regression are powerful dimensionality reduction techniques used to handle high-dimensional data and severe multicollinearity.
+
+** Core Differences
+The fundamental difference is that PCR is unsupervised, whereas PLS is supervised.
+
+| Feature | Principal Component Regression (PCR) | Partial Least Squares (PLS / PLSR) |
+|---------+--------------------------------------+------------------------------------|
+| *Approach Type* | *Unsupervised* (ignores Y during feature extraction) | *Supervised* (uses X and Y relationship) |
+| *Optimization Goal* | Maximizes *variance* explained strictly within X | Maximizes *covariance* between X and Y |
+| *Component Selection* | Chosen because they vary the most in X | Chosen because they are highly predictive of Y |
+| *Number of Components* | Generally requires *more components* | Generally requires *fewer components* |
+| *Common Use Cases* | General multicollinearity, image/signal denoising | Chemometrics, bioinformatics, spectral data |
+
+** How They Work
+*** Principal Component Regression (PCR)
+1. Performs Principal Component Analysis (PCA) on predictor matrix X to transform correlated variables into uncorrelated components.
+2. Drops lower-variance components and runs standard Ordinary Least Squares (OLS) linear regression on the top components.
+3. *Risk:* Can perform poorly if maximum variance directions are unrelated to Y.
+
+*** Partial Least Squares (PLS)
+1. Extracts latent components by looking at X and Y simultaneously.
+2. Chooses directions along the path of highest correlation between the data matrix and the target.
+3. Yields a more compact model with better predictive accuracy using fewer components.
+
+** Shared Characteristics
+- *Data Preparation:* Highly sensitive to scale; requires variables to be standardized or normalized first.
+- *Interpretability:* Difficult to interpret because final predictors are linear combinations of all original features (no true variable selection).
+
+** Comparative Power
+- *Efficiency:* PLSR wins. It extracts maximum target-relevant info per component.
+- *Blind Spot Protection:* PLSR wins. PCR may drop critical low-variance predictive signals.
+- *Predictive Accuracy:* Tie. When fully optimized with the ideal number of components, maximum predictive accuracies are often identical.
+
+* Robust Regression Methods
+** Overview
+Designed to *minimize the distorting impact of outliers and noise* in a dataset. Traditional OLS is highly sensitive to extreme points because it minimizes squared residuals.
+
+** Core Mechanisms
+1. *Alternative Loss Functions:* Treats large errors differently (e.g., switching from quadratic to linear scaling).
+2. *Iteratively Rewweighted Least Squares (IRLS):* Progressively down-weights data points with massive residuals over successive iterations.
+
+** Common Methods
+*** Huber Regression (M-Estimation)
+- Bridges the gap between OLS and Least Absolute Deviations (LAD).
+- Uses squared error for small residuals and absolute error for large residuals based on a threshold ($\delta$).
+- *Limitation:* Vulnerable to high-leverage outliers in the predictor variables (X).
+
+*** RANSAC (RANdom SAmple Consensus)
+- Non-deterministic algorithm that randomly selects subsets to find the largest group of "inliers".
+- Fits the final line exclusively on clean inliers, discarding outliers entirely.
+
+*** Theil-Sen Estimator
+- Non-parametric method that computes the slope between every possible pair of points and selects the *median slope*.
+- Highly robust but computationally intensive ($O(N^2)$).
+
+*** MM-Estimation
+- Combines the high breakdown point of S-estimation with the high efficiency of M-estimation.
+- Modern gold standard for general-purpose robust linear modeling.
+
+* Statistical Interpretation & Metrics
+** Verbalizing R-Squared ($R^2$)
+- *Definition:* The proportion of variance in the dependent variable (Y) explained or predicted by the independent variables (X).
+- *Template:* /"Approximately [R² x 100]% of the variation in [Target] can be explained by our model's [Predictors], while the remaining percentage is due to random noise or omitted factors."/
+- *Nuances:* It is not "percent accuracy", it does not imply causation, and a "good" value is strictly context-dependent.
+
+** Using P-Values to Justify $R^2$
+The $p$-value of the overall F-test measures *statistical reliability*, validating whether your $R^2$ is a real trend or a fluke.
+
+*** Metric Combination Matrix
+- *High $R^2$ + Low $p$-value:* Ideal baseline. Highly predictive and statistically bulletproof.
+- *Low $R^2$ + Low $p$-value:* Real trend, high noise. Common in human behavior or stock datasets. Trend is structurally sound but subtle.
+- *High $R^2$ + High $p$-value:* "Fool's Gold". Indicates overfitting on random noise due to a small sample size or too many variables.
+- *Low $R^2$ + High $p$-value:* Failed model. Indistinguishable from a random guess.
+
+** F-Statistic and ANOVA Connection
+- *Yes, the F-statistic is the core mathematical engine of ANOVA.*
+- ANOVA is the overall *test*, while the F-statistic is the *ratio* calculated by it:
+  $$	ext{F-statistic} = rac{	ext{Variance BETWEEN groups (Signal)}}{	ext{Variance WITHIN groups (Noise)}}$$
+- In linear regression, the same framework tests overall significance:
+  $$	ext{F-statistic} = rac{	ext{Variance explained by model (Signal)}}{	ext{Variance left in residuals (Noise)}}$$
+- A large F-statistic and low $p$-value reject the null hypothesis that $R^2 = 0$.

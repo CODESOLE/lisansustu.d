@@ -1,0 +1,182 @@
+#+TITLE: Statistical Regression and Dimensionality Reduction Guide
+#+AUTHOR: Data Science Assistant
+#+DATE: [2026-10-14 Wed]
+#+OPTIONS: toc:2 num:t
+
+* Dimensionality Reduction: PLS vs. PCR
+
+** Overview
+- **PLS (Partial Least Squares)**: A supervised dimensionality reduction method. It maximizes the covariance between predictors ($X$) and the response ($Y$).
+- **PCR (Principal Component Regression)**: An unsupervised dimensionality reduction method. It performs PCA on $X$ first (maximizing variance within $X$), completely ignoring $Y$, and then fits an OLS regression on the top principal components.
+
+** Python Code Implementation (scikit-learn)
+Here is how to implement, optimize via cross-validation, and compare PLSR and PCR using [[https://scikit-learn.org/stable/][scikit-learn]].
+
+#+BEGIN_SRC python :results output
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.cross_decomposition import PLSRegression
+from sklearn.linear_model import LinearRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.metrics import r2_score
+
+# 1. Generate Synthetic High-Dimensional Data with Multicollinearity
+np.random.seed(42)
+n_samples, n_features = 100, 20
+X_latent = np.random.normal(size=(n_samples, 3))  # 3 true underlying signals
+# Project to 20 highly correlated features
+X = np.dot(X_latent, np.random.normal(size=(3, n_features))) + np.random.normal(scale=0.1, size=(n_samples, n_features))
+# Y depends heavily on the first latent structure
+y = X_latent[:, 0] * 5.0 + np.random.normal(scale=0.5, size=n_samples)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 2. Setup PCR Pipeline (PCA + OLS Linear Regression)
+pcr_pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('pca', PCA()),
+    ('regressor', LinearRegression())
+])
+
+# 3. Setup PLSR Pipeline (PLSR scales internally, but Pipeline helps with tuning)
+plsr_pipeline = Pipeline([
+    ('plsr', PLSRegression())
+])
+
+# 4. Define Parameter Grids for Tuning Number of Components
+param_grid_pcr = {'pca__n_components': range(1, 10)}
+param_grid_plsr = {'plsr__n_components': range(1, 10)}
+
+# 5. Grid Search Cross-Validation
+grid_pcr = GridSearchCV(pcr_pipeline, param_grid_pcr, cv=5, scoring='r2')
+grid_pcr.fit(X_train, y_train)
+
+grid_plsr = GridSearchCV(plsr_pipeline, param_grid_plsr, cv=5, scoring='r2')
+grid_plsr.fit(X_train, y_train)
+
+# 6. Evaluate Best Models
+pcr_pred = grid_pcr.predict(X_test)
+plsr_pred = grid_plsr.predict(X_test)
+
+print(f"PCR - Best n_components: {grid_pcr.best_params_['pca__n_components']}")
+print(f"PCR - Test R2 Score: {r2_score(y_test, pcr_pred):.4f}\n")
+
+print(f"PLSR - Best n_components: {grid_plsr.best_params_['plsr__n_components']}")
+print(f"PLSR - Test R2 Score: {r2_score(y_test, plsr_pred):.4f}")
+#+END_SRC
+
+#+RESULTS:
+: PCR - Best n_components: 8
+: PCR - Test R2 Score: 0.9835
+:
+: PLSR - Best n_components: 4
+: PLSR - Test R2 Score: 0.9851
+
+* Robust Regression Methods
+
+** Overview
+Designed to minimize the distorting impact of outliers and high-leverage points.
+- **Huber Regression**: Switches from L2 loss (squared error) to L1 loss (absolute error) past a defined residual threshold ($\delta$).
+- **RANSAC**: Iteratively samples a random subset of data to locate the model with the largest amount of "inliers," ignoring extreme anomalies.
+
+** Python Code Implementation (scikit-learn & statsmodels)
+This snippet shows how to implement Huber, RANSAC, and standard OLS to compare how they perform on a dataset contaminated with synthetic outliers.
+
+#+BEGIN_SRC python :results output
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression, HuberRegressor, RANSACRegressor
+import statsmodels.api as sm
+
+# 1. Create a clean linear dataset
+np.random.seed(10)
+X = np.linspace(0, 10, 100).reshape(-1, 1)
+y = 3.0 * X.squeeze() + np.random.normal(scale=1.5, size=100)
+
+# 2. Inject corrupting outliers (10% of data)
+y[::10] += 30.0
+
+# --- Implementation Using Scikit-Learn ---
+ols = LinearRegression().fit(X, y)
+huber = HuberRegressor(max_iter=1000).fit(X, y)
+ransac = RANSACRegressor(random_state=42).fit(X, y)
+
+print("--- Scikit-Learn Estimated Coefficients ---")
+print(f"True Slope: 3.000")
+print(f"OLS Slope (Sensitive): {ols.coef_[0]:.4f}")
+print(f"Huber Slope (Robust): {huber.coef_[0]:.4f}")
+print(f"RANSAC Slope (Robust): {ransac.estimator_.coef_[0]:.4f}\n")
+
+# --- Implementation Using Statsmodels (RLM - Robust Linear Model) ---
+# Statsmodels requires explicitly adding a constant column for intercepts
+X_sm = sm.add_constant(X)
+rlm_model = sm.RLM(y, X_sm, M=sm.robust.norms.HuberT())
+rlm_results = rlm_model.fit()
+
+print("--- Statsmodels RLM Summary ---")
+print(rlm_results.summary().tables[1])
+#+END_SRC
+
+* Statistical Interpretation & Metrics
+
+** Verbalizing R-Squared ($R^2$)
+- **Definition**: The proportion of variance in the target variable ($Y$) explained or predicted by the independent variables ($X$) in the model.
+- **Template Script**: *"Approximately [R2 * 100]% of the variation in [Target Variable] can be explained by our model's [Predictor Variables], while the remaining percentage is due to random noise or unmeasured factors."*
+
+** Pairing R-Squared with P-Value (F-Statistic)
+- **High $R^2$ + Low $p$-value**: Strong predictors, highly reliable effect.
+- **Low $R^2$ + Low $p$-value**: Predictors explain a small amount of variance, but the trend is statistically real and reliable (common in large, noisy datasets).
+- **High $R^2$ + High $p$-value**: Danger zone. The model is overfitting noise; common with small sample sizes and too many features.
+
+** The F-Statistic and ANOVA Connection
+- **ANOVA Framework**: The F-statistic evaluates the overall significance of a regression model by structuring it as an Analysis of Variance (ANOVA).
+- **The Ratio Formula**:
+  $$F = \frac{\text{Variance Explained by the Model (Signal)}}{\text{Variance in Residuals (Noise)}}$$
+- A high F-statistic yields a low $p$-value, allowing you to reject the null hypothesis ($R^2 = 0$) and claim your model significantly beats a flat mean-line baseline guess.
+
+** Generating Comprehensive Regression Diagnostics with Statsmodels
+This script runs a multiple regression and prints out the F-statistic, $R^2$, and $p$-values needed to formally justify a model's validity.
+
+#+BEGIN_SRC python :results output
+import numpy as np
+import statsmodels.api as sm
+
+# Generate dummy regression data
+np.random.seed(42)
+X = np.random.normal(size=(100, 2))
+y = 1.5 * X[:, 0] - 2.0 * X[:, 1] + np.random.normal(scale=1.0, size=100)
+
+# Add constant intercept vector
+X = sm.add_constant(X)
+
+# Fit OLS
+model = sm.OLS(y, X)
+results = model.fit()
+
+# Extract parameters dynamically for verbal justification scripts
+r2 = results.rsquared
+f_pvalue = results.f_pvalue
+f_stat = results.fvalue
+
+print(f"Model Diagnostic Extraction:")
+print(f"----------------------------")
+print(f"R-squared: {r2:.4f}")
+print(f"F-statistic: {f_stat:.2f}")
+print(f"F-statistic Prob (p-value): {f_pvalue:.4e}")
+print("\nVerbal Justification Text:")
+print(f"Our model yields an R2 of {r2:.4f}, meaning it explains {r2*100:.1f}% of the variance. ")
+print(f"Because the F-statistic p-value is {f_pvalue:.4e} (< 0.05), the model is highly significant.")
+#+END_SRC
+
+#+RESULTS:
+: Model Diagnostic Extraction:
+: ----------------------------
+: R-squared: 0.8548
+: F-statistic: 285.51
+: F-statistic Prob (p-value): 2.2720e-41
+:
+: Verbal Justification Text:
+: Our model yields an R2 of 0.8548, meaning it explains 85.5% of the variance.
+: Because the F-statistic p-value is 2.2720e-41 (< 0.05), the model is highly significant.
