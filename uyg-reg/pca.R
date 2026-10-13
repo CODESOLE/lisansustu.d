@@ -12,7 +12,6 @@ pca <- prcomp(arr, center = TRUE, scale. = FALSE)
 arr_pca <- pca$x[, 1, drop = FALSE]
 # sklearn stores components as rows; prcomp stores them as columns
 components <- t(pca$rotation[, 1, drop = FALSE])
-# Variances and proportion of variance explained
 explained_variance <- pca$sdev[1]^2
 explained_variance_ratio <- explained_variance / sum(pca$sdev^2)
 plot(pca$sdev, type = "h")
