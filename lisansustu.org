@@ -103,6 +103,14 @@ Spearman dont care whether relationship linear/nonlinear only look for relative 
 
 Eigenvectors of Symmetric Matrices are **Orthogonal**
 
+* Confidence Interval
+$$\textbf{ME} = z \cdot \frac{\sigma}{\sqrt{n}}$$
+$$\textbf{CI} = \bar{x} \pm \textbf{ME}$$
+$$\textbf{CI} = \bar{x} \pm \frac{\sigma}{\sqrt{n}}$$
+
+ME: Margin of Error
+Choose z for corresponding confidence interval like for 95% -> z = 1.96
+
 * Categorical Distribution
 Think as Bernoulli with multiple categories. One sample but multiple consequences. Parameterized with k which is category count.
 Bernoulli is special case of Categorical Distribution.
