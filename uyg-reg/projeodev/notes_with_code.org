@@ -2,6 +2,7 @@
 #+AUTHOR: Data Science Assistant
 #+DATE: [2026-10-14 Wed]
 #+OPTIONS: toc:2 num:t
+#+PROPERTY: header-args:python :session py-kernel :async
 
 * Dimensionality Reduction: PLS vs. PCR
 
@@ -180,3 +181,25 @@ print(f"Because the F-statistic p-value is {f_pvalue:.4e} (< 0.05), the model is
 : Verbal Justification Text:
 : Our model yields an R2 of 0.8548, meaning it explains 85.5% of the variance.
 : Because the F-statistic p-value is 2.2720e-41 (< 0.05), the model is highly significant.
+
+#+BEGIN_SRC python :results file
+import numpy as np
+import matplotlib.pyplot as plt
+plt.style.use('dark_background')
+np.random.seed(42)  # Set seed for reproducibility
+x = np.random.normal(0, 10, 100)  # Generate 100 normal random values for x
+y = np.random.normal(0, 1, 100)  # Generate 100 normal random values for y
+plt.figure(figsize=(8, 6))
+plt.scatter(x, y, color='blue', label='Normal Random Data')
+plt.title('Normal Random X and Y Variables')
+plt.xlabel('X value')
+plt.ylabel('Y value')
+plt.grid(True)
+plt.legend()
+plt.savefig('plot.png', format='png', dpi=300)
+plt.close('all')
+'plot.png'
+#+END_SRC
+
+#+RESULTS:
+[[file:plot.png]]
