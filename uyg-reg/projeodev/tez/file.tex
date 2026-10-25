@@ -1,39 +1,37 @@
 \documentclass[12pt]{article}
 
-% --- Packages ---
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath, amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
-\usepackage{natbib}
 \usepackage[hidelinks]{hyperref}
+\usepackage[turkish]{babel}
 
-% --- Title information ---
-\title{Your Paper Title}
-\author{First Author\thanks{Department, University, email@example.com}
-  \and Second Author\\Department, University}
+\title{Yüksek Boyutlu Veri Setlerinde PCR (Principal Component Regression) Temel Bileşen Regresyonun Tahminsel Gücünün Değerlendirilmesi}
+\author{Caner SELÇUK}
 \date{\today}
 
 \begin{document}
+\shorthandoff{=}
 
 \maketitle
+\tableofcontents
 
 \begin{abstract}
-Write a concise summary of the research question, methods, main findings,
-and contribution. Replace this text with your abstract.
+Bu raporda PCA'in, regresyon modellerinde bir uygulaması olan PCR'ı Beton Basınç Dayanımı \cite{dataset} veri seti üzerinde bir vaka çalışması olarak ele alınması ve çok boyutlu, çoklu doğrusal bağlantı (multicollinearity) içeren bağımsız değişkenleri daha düşük özniteliğe (feature) indirgeyip regresyon modellenmesi yapılmıştır. Ayrıca performans metrikleri incelenerek Çoklu Lineer Regresyon yöntemi ile karşılaştırılmıştır. Ridge/Lasso Regresyonları ile performans karşılaştırılması yapılmıştır. Son olarak yöntemin kısıtlılıkları tartışılıp alternatif yöntemlerden bahsedilmiştir.
 \end{abstract}
 
-\noindent\textbf{Keywords:} keyword one; keyword two; keyword three
+\noindent\textbf{Anahtar Kelimeler:} PCR, Regresyon, Çoklu Doğrusal Bağlantı, Yüksek-Boyutlu Veri, PCA, Çoklu Doğrusal Regresyon, Öznitelik İndirgeme, Temel Bileşen Analiz, Temel Bileşen Regresyon
 
-\section{Introduction}
+\section{Giriş}
 Introduce the topic, explain the research problem, and state the paper's
 main contribution. Outline the rest of the paper.
 
-\section{Related Work}
+\section{Literatür Taraması}
 Review relevant literature and explain how this paper relates to previous
-research \citep{example2024}.
+research \cite{jolliffe}.
 
-\section{Methods}
+\section{Yöntem}
 Describe the data, materials, and methods used in the study.
 
 For example, an equation can be written as
@@ -41,7 +39,7 @@ For example, an equation can be written as
     y = \alpha + \beta x + \varepsilon.
 \end{equation}
 
-\section{Results}
+\section{Bulgular}
 Present the main findings. Refer to tables and figures in the text.
 
 \begin{table}[htbp]
@@ -60,23 +58,31 @@ Present the main findings. Refer to tables and figures in the text.
 \begin{figure}[htbp]
     \centering
     % Replace with your image file:
-    % \includegraphics[width=0.7\linewidth]{figure1}
+    \includegraphics[width=0.7\linewidth]{../plot}
     \caption{Example figure caption.}
     \label{fig:example}
 \end{figure}
 
-\section{Discussion}
+\section{Yöntemin Kısıtlı Yanları}
 Interpret the findings, discuss their implications, and note limitations.
 
-\section{Conclusion}
+\section{Sonuç ve Öneriler}
 Summarize the paper's main contribution and suggest directions for future
 work.
 
-\section*{Acknowledgments}
-Acknowledge contributors, funding, or other support, if applicable.
+\begin{thebibliography}{9}
 
-\bibliographystyle{plainnat}
-\bibliography{references}
+    \bibitem{dataset}
+    I-Cheng Yeh (1998).
+    \textit{Concrete Compressive Strength [Dataset]}.
+    UCI Machine Learning Repository, https://doi.org/10.24432/C5PK67.
+
+    \bibitem{jolliffe}
+    Jolliffe, I. T. (2002).
+    \textit{Principal Component Analysis (2nd ed.)}.
+    Springer-Verlag.
+
+\end{thebibliography}
 
 \end{document}
 
