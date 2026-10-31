@@ -6,10 +6,13 @@
 \usepackage{booktabs}
 \usepackage[hidelinks]{hyperref}
 \usepackage[turkish]{babel}
+\usepackage[titles]{tocloft}
 
 \title{Yüksek Boyutlu Veri Setlerinde PCR (Principal Component Regression) Temel Bileşen Regresyonun Tahminsel Gücünün Değerlendirilmesi}
 \author{Caner SELÇUK}
 \date{\today}
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 
 \begin{document}
 \shorthandoff{=}
@@ -23,20 +26,26 @@ Bu raporda PCA'in, regresyon modellerinde bir uygulaması olan PCR'ı Beton Bas�
 
 \noindent\textbf{Anahtar Kelimeler:} PCR, Regresyon, Çoklu Doğrusal Bağlantı, Yüksek-Boyutlu Veri, PCA, Çoklu Doğrusal Regresyon, Öznitelik İndirgeme, Temel Bileşen Analiz, Temel Bileşen Regresyon
 
-\section{Giriş}
-Introduce the topic, explain the research problem, and state the paper's
-main contribution. Outline the rest of the paper.
+\newpage
 
-\section{Literatür Taraması}
-Review relevant literature and explain how this paper relates to previous
-research \cite{jolliffe}.
+\section{Giriş}
+Günümüzde veri setlerinin öznitelik boyutları kolayca çok fazla boyutlara
+ulaşabilmektedir. Örneğin; yüzlerce gen ifadesinin belirli tip bir kanserdeki ayırt etme etkisinin gözlemlenmesi, finansal karar verme süreçlerinde çok değiskenli veri setleri, kimyasal süreçlerde içerik miktarlarının optimal tahmin edilmesinde veya mobil uygulama yada yazılım hizmetlerinde kullanıcı deneyimi hakkında bilgi sahibi olmak için çok fazla parametrenin gözlemlenmesi. Buna genellikle ``Çok Boyutluluğun Laneti'' (Curse of Dimensionality) de denir. Çok boyutluluk beraberinde şu sorunları getirir:
+veriyi görselliştirme zorluğu, modelin yorumlanabilirliğinin azalması, hedef değişkenin varyansını açıklamada etkisi olmayan bir yığın gereksiz değişkenler, çoklu doğrusal bağlantı ve mesafe tabanlı çalışan makine öğrenmesi algoritmaların (K En Yakın Komşu, Kümeleme vs.) düzgün çalışmamasına sebeb olur. Uzak-yakın kavramlarının daha az anlamı
+olmasına sebebiyet verirler. Bağımsız değişkenler arasında güçlü korelasyona sahip değişkenlerin katsayıları tahmin edilirken belirsizliğin artmasına sebeb olur, katsayıların tahmin varyansını arttırırlar. Model veri setine aşırı uyum sağlar.
+
+\vspace{1.5em}
+
+Bu raporda ise PCR yöntemi ile $m \times n$ boyutlu tasarım matriksine PCA (Principal Component Analysis) uygulayarak boyut indirgemesi yapar. PCR denetimsiz bir modelleme yöntemdir çünkü hedef değişkeni ne kadar doğru tahmin ettiğini dikkate almaz. Boyut indirgemesi özniteliklerde en fazla varyansı yakalayan eksenleri bularak gerçekleşir. Tasarım matriksinde varyansı açıklayan en fazla $k$ bileşeni seçerek yeni bir regresyon modeli yapılır. Seçilecek $k$ hiper-parametresi çapraz doğrulama (cross-validation) yöntemiyle seçilir. Böylelikle çoklu doğrusal bağlantı içeren öznitelik sayısı yok edilir. Fakat yöntemin kısıtlı yanları adlı bölümde bu yöntemin yetersiz kaldığı durumları gösterip alternatif yöntemlerden bahsedildi. $F-test$ ve $R^2$ gibi istatistiksel metrikler ile indirgemenin hedef değişkeni tahmin etmede anlamlı fayda sağlayıp sağlamadığını test edildi. Modellemeler ve testler R programlama dili kullanılarak gerçekleştirildi.
+
+\newpage
 
 \section{Yöntem}
-Describe the data, materials, and methods used in the study.
+Describe the data, materials, and methods used in the study \cite{jolliffe}.
 
 For example, an equation can be written as
 \begin{equation}
-    y = \alpha + \beta x + \varepsilon.
+  y = \alpha + \beta x + \varepsilon
 \end{equation}
 
 \section{Bulgular}
