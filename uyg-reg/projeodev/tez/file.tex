@@ -43,10 +43,34 @@ Bu raporda ise PCR yöntemi ile $m \times n$ boyutlu tasarım matriksine PCA (Pr
 \section{Yöntem}
 Describe the data, materials, and methods used in the study \cite{jolliffe}.
 
-For example, an equation can be written as
-\begin{equation}
-  y = \alpha + \beta x + \varepsilon
-\end{equation}
+https://youtu.be/J337yXxTevs?si=RXu1awXV6ZZI8V2B
+https://youtu.be/ZnCjNL-y27Y?si=D6zZmUz8LMxLlsNq
+
+PCA is related to **both** eigendecomposition and SVD—they’re two ways to compute it.
+
+- **Eigendecomposition:** PCA finds the eigenvectors of the data’s covariance matrix. These eigenvectors are the principal directions; their eigenvalues measure the variance along those directions.
+- **SVD:** If $\(X\)$ is the mean-centered data matrix, write $\(X = U\Sigma V^\top\)$. The columns of $\(V\)$ are the principal directions, and the variances are the squared singular values divided by the number of samples minus one.
+
+In practice, SVD is often used because it can be more numerically stable and avoids explicitly forming the covariance matrix.
+
+general real matrix:
+eigenvalues maybe complex
+eigenvectors maybe induced rank reduction(must be 2 eigenvector but there is only 1)
+directions of eigenvectors may not be perpendicular.
+
+(QDQT)real symmetric matrix (variance-covariance matrix): symmetric matrices always diagonalizable.
+eigenvalues alyways real
+eigenvectors always exits and orthonormal qTq=I
+directions of eigenvectors always perpendicular (eigenbasis).
+
+**which one you use depends on the shape of \(X\)** and what you need.
+
+Assume \(X\) is mean-centered, with **\(n\) rows for samples and \(p\) columns for features**:
+
+- \(X^\top X/(n-1)\) is the **feature covariance matrix** (\(p\times p\)). Its eigenvectors give the principal directions in feature space. This is the standard covariance-matrix approach.
+- \(XX^\top\) is an **\(n\times n\) sample Gram matrix**. It is useful when there are many more features than samples (\(p\gg n\)); its nonzero eigenvalues match those of \(X^\top X\). You can recover a feature-space principal direction \(v\) from a sample-space eigenvector \(u\) using \(v = X^\top u/\sqrt{\lambda}\) (for nonzero eigenvalue \(\lambda\); scaling depends on the covariance convention).
+
+You generally **don’t need to calculate both**. Use \(X^\top X\) when it’s smaller; use \(XX^\top\) when it’s smaller. SVD computes the same PCA directions without explicitly forming either matrix.
 
 \section{Bulgular}
 Present the main findings. Refer to tables and figures in the text.

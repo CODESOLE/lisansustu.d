@@ -1,3 +1,17 @@
+first using "Concrete_Data-Sheet1.csv" dataset create, multi linear
+regression model with 8 feature and 1 target variable (target variable
+= "Concrete compressive strength(MPa, megapascals)" and other rest of
+8 features as predictors) then apply PCR (choose optimal top k elements
+via cross-validation) and evaluate both models with accuracy again
+with 10-Fold corssvalidation, split data as train-test. Also apply
+statistical test to both models like F-test and R^2 or choose
+appropriate metric yourself to determine whether dimension-reduced
+model statiscally meaningful compared to not-reduced multi linear
+regression. Implement with both R language and python language with
+comments. For dataset choose best scaling method like StandardScaler
+or minmax-normalization before fitting models.
+
+
 Here are the best textbooks for learning about **Principal Component
 Regression (PCR)**, ranging from applied machine learning guides to
 rigorous theoretical references:
