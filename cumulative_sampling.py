@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+plt.style.use("dark_background")
 arr = "aatgcctattc"
 nuc = np.frombuffer(arr.encode("ascii"), dtype="S1")
 
