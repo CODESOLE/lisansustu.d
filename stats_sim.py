@@ -11,6 +11,7 @@ BLUE = (50, 120, 220)
 vertices = [orig, orig]
 running = True
 angle = 0.0
+variance = 30
 
 while running:
     for event in pygame.event.get():
@@ -18,12 +19,18 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if pygame.mouse.get_pressed()[0]:
+                variance += 1
+            elif pygame.mouse.get_pressed()[2]:
+                variance -= 1 if variance != 0 else 0
+            print(variance)
         elif event.type == pygame.MOUSEWHEEL:
             angle += event.y
-            angle = pygame.math.clamp(angle, 0, 360)
+            angle = angle % 361
             print(angle)
 
-    next_angle = np.random.normal(loc=np.deg2rad(angle), scale=1)
+    next_angle = np.random.normal(loc=np.deg2rad(angle), scale=np.deg2rad(variance))
     next_mag = np.random.normal(loc=3, scale=1)
     next_x = np.cos(next_angle) * next_mag
     next_y = -1 * np.sin(next_angle) * next_mag
