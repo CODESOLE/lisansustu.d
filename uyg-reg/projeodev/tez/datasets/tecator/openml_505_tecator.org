@@ -1,0 +1,47 @@
+#+TITLE: OpenML 505 (Tecator) Veri Seti Özeti
+#+AUTHOR: AI Asistan
+#+DATE: 2026-11-17
+#+LANGUAGE: tr
+
+* Genel Bakış
+*OpenML 505 ID'li veri seti (tecator)*, *kıyılmış et örneklerinin yağ
+oranını* kızılötesi ışık spektrumu ölçümlerinden tahmin etmek amacıyla
+oluşturulmuş klasik bir *regresyon* veri setidir.
+
+Veriler, *Tecator* markasının /Infratec Food and Feed Analyzer/ adlı
+spektrometre cihazıyla kaydedilmiştir.
+
+* Veri Setinin Temel Özellikleri
+- *Problem Türü:* Sayısal bir hedef değişkeni tahmin etmeye dayalı
+  klasik bir regresyon (/regression/) görevidir.
+- *Örnek Sayısı (Satırlar):* Toplam *240* adet ince kıyılmış saf et
+  örneğinden oluşur ve veri setinde hiç eksik değer (/missing value/)
+  bulunmaz.
+- *Öznitelik Sayısı (Sütunlar):* Tamamı sayısal olan toplam *125*
+  sütun içerir.
+
+* Sütunların (Özniteliklerin) İçeriği
+- *100 Adet Spektrum Kanalı:* Cihazın 850 ile 1050 nanometre dalga
+  boyu aralığında ölçtüğü yakın kızılötesi (/Near Infrared - NIR/)
+  ışık soğurma (/absorbance/) değerleridir.
+- *22 Adet Temel Bileşen (PCA):* Bu 100 spektrum kanalından boyut
+  indirgeme yöntemiyle önceden çıkarılmış temel bileşen (/Principal
+  Components/) skorlarıdır.
+- *3 Adet Kimyasal İçerik Değerleri:* Örneklerin analitik kimya
+  yöntemleriyle ölçülmüş yüzde cinsinden *nem (su)*, *protein* ve
+  hedef değişken olan *yağ (fat)* oranlarıdır.
+
+* Neden Önemlidir ve Nasıl Kullanılır?
+- *Hızlı Analiz Hedefi:* Etin yağ oranını geleneksel kimyasal
+  yöntemlerle bulmak zaman alıcı ve maliyetliyken, ışık geçirgenliği
+  üzerinden makine öğrenmesiyle saniyeler içinde tahmin yapmak
+  hedeflenir.
+- *Çoklu Doğrusal Bağlantı (Multicollinearity):* 100 spektrum kanalı
+  birbirine çok yakın dalga boyları olduğu için aralarında yüksek
+  korelasyon vardır; bu nedenle *PLS (Kısmi En Küçük Kareler)*,
+  *Ridge/Lasso regresyon*, *Yapay Sinir Ağları* ve *Fonksiyonel Veri
+  Analizi (FDA)* algoritmalarını test etmek için sıkça kullanılır.
+- *Veri Sızıntısı (Data Leakage) Uyarısı:* Yağ oranını sadece ışık
+  spektrumundan tahmin etmek istiyorsanız, modelinizi eğitirken diğer
+  kimyasal ölçüm sütunlarını (*nem* ve *protein*) girdi olarak
+  kullanmamanız gerekir.
