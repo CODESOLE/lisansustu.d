@@ -41,14 +41,18 @@ Bu raporda ise PCR yöntemi ile $n \times p$ boyutlu tasarım matriksine PCA (Pr
 \newpage
 
 \section{Yöntem}
-PCR yöntemi ilk önce tasarım matriksi olan X'i standartlaştırma denilen öznitelik sütunlarının ortalamısını sıfır, standart sapmasını bire eşitleme ile başlar. Bunun nedeni, öznitelikler arasında birim farkından kaynaklanan ölçek dengesizliğini gidermektir. Böylece her bir bağımsız değişkenin biriminden bağımsız modele katkısı incelenmiş olur. Ayrıca PCA'in temel fikri varyasyon maksimizasyonu olduğundan varyans hesaplaması daha kolay hesaplanır.
+PCR yöntemi ilk önce tasarım matriksi olan X'i standartlaştırma denilen öznitelik sütunlarının ortalamısını sıfır, standart sapmasını bir yapma ile başlar. Bunun nedeni, öznitelikler arasında birim farkından kaynaklanan ölçek dengesizliğini gidermektir. Böylece her bir bağımsız değişkenin biriminden bağımsız modele katkısı incelenmiş olur. Ayrıca PCA'in temel fikri varyasyon maksimizasyonu olduğundan varyans hesaplaması daha kolay hesaplanır.
 
 \vspace{1.5em}
 
-X $n \times p$'lik bir tasarım matriksi olsun. n gözlem saysını (satır sayısını), p ise tahmin edici sayısını (sütun sayısını) ifade etmektedir. $\bar{\textbf{x}}$ elemanları X matriksinin sütunlarının örneklem ortalaması olan $p \times 1$'lik bir vektör olsun. Aşağıdaki gösterimde i her bir örneklemi, j ise her bir tahmin ediciyi temsil etmektedir.
+X $n \times p$'lik bir tasarım matriksi olsun. n gözlem saysını (satır sayısını), p ise tahmin edici sayısını (sütun sayısını) ifade etmektedir. I.T.Jolliffe \cite{jolliffe} kitabında p kesim olmayan ham bağımsız değişkenlerin sayısıdır. Standartlaştırma sırasında diyagonal standart sapma matriksinin tersinin hesaplanabilmesi için tasarım matriksinde birlerden oluşan kesim sütunu yoktur. Kesim noktası daha sonra cebirsel olarak hesaplanır.
+
+\vspace{1.5em}
+
+$\bar{\textbf{x}}$ elemanları X matriksinin sütunlarının örneklem ortalaması olan $p \times 1$'lik bir vektör olsun. Aşağıdaki gösterimde i her bir örneklemi, j ise her bir tahmin edici sütununu temsil etmektedir.
 
 \[
-  \boldsymbol{\bar{x}}_j = \frac{1}{n-1} \sum_{i=1}^{n} X_{ij}
+  \boldsymbol{\bar{x}}_j = \frac{1}{n} \sum_{i=1}^{n} X_{ij}
 \]
 
 $\boldsymbol{1}_n$ $n \times 1$'lik birlerden oluşan vektörü temsil etsin. $\boldsymbol{X}_c$ her sütunun ortalamasından çıkarılmış, merkezileştirilmiş tasarım matriksini göstersin.
@@ -57,14 +61,14 @@ $\boldsymbol{1}_n$ $n \times 1$'lik birlerden oluşan vektörü temsil etsin. $\
   \mathbf{X}_c = \mathbf{X} - \mathbf{1}_n \boldsymbol{\bar{\textbf{x}}}^\top
 \]
 
-Merkezileştirmeden sonra standartlaştırma yapılır. Tahmin edicilerin örneklem standart sapması $p \times 1$'lik bir vektör olsun. Diyagonal formda $\boldsymbol{D}=diag(s)$ yazarsak. $D$ matriksi $p \times p$'lik tahmin edicilerin örneklem standart sapmaları köşegenlerinde olan bir diyagonal matriks olur. Standartlaştırılmış $\textbf{X}$ matriksi $\textbf{X}_s$ olarak gösterilsin. $\mathbf{X}$ tasarım matriksinin her bir sütunun kendisiyle iç çarpımı, o sütunun tekil değerinin karesine eşittir.
+Merkezileştirmeden sonra standartlaştırma yapılır. Tahmin edicilerin örneklem standart sapması $p \times 1$'lik bir vektör olsun. Diyagonal formda $\boldsymbol{D}=diag(s)$ yazarsak. $D$ matriksi $p \times p$'lik tahmin edicilerin örneklem standart sapmaları köşegenlerinde olan bir diyagonal matriks olur. Standartlaştırılmış $\textbf{X}_c$ matriksi $\textbf{X}_s$ olarak gösterilsin. $\mathbf{X}_c$ tasarım matriksinin her bir sütunun kendisiyle iç çarpımı, o sütunun tekil değerinin karesine eşittir.
 
 \[
 \sigma_j^2 = x_j^\top x_j
 \]
 
 \[
-s_j = \frac{\sigma_j}{\sqrt{n-1}}
+s_j = \sqrt{\frac{\sigma_j^2}{n-1}} = \sqrt{\frac{x_j^\top x_j}{n-1}}
 \]
 
 
@@ -81,17 +85,22 @@ s_1 & 0 & \cdots & 0 \\
   \mathbf{X}_s = \mathbf{X}_c \mathbf{D}^{-1}
 \]
 
-Merkezileştirilmiş ve standartlaştırılmış $\mathbf{X}_s$ tasarım matriksi SVD için girdi olarak kullanılır. Standartlaştırılmış tasarım matriksi $\mathbf{X}_s$'in kovaryans matriksi ($\mathbf{X}_s^\top \mathbf{X}_s$), orjinal tasarım matriksi olan $\mathbf{X}$'in aynı zamanda korelasyon matriksidir.
+\newpage
 
-\vspace{1.5em}
-
-Elde edilecek regresyon modelinin doğru bir kesim değerine sahip olabilmesi için hedef değişkeni $y$ içinde merkezileştirme yapılır. Hedef değişkeni merkezileştirme, kesim noktasını tahmin etme ile  tahmin edicilerin eğimlerini tahmin etme sürecini ayrıştırıyor. $\bar{\mathbf{y}}$ hedef değişkenin ortalaması olsun. $y_c$ ise hedef değişkeninden ortalama değerlerden çıkarılmış, merkezileştirilmiş vektörü göstersin.
+Merkezileştirilmiş ve standartlaştırılmış $\mathbf{X}_s$ tasarım matriksi SVD için girdi olarak kullanılır. Elde edilecek regresyon modelinin doğru bir kesim değerine sahip olabilmesi için hedef değişkeni $y$ içinde merkezileştirme yapılır. Hedef değişkeni merkezileştirme, kesim noktasını tahmin etme ile  tahmin edicilerin eğimlerini tahmin etme sürecini ayrıştırıyor. $\bar{\mathbf{y}}$ hedef değişkenin ortalaması olsun. $y_c$ ise hedef değişkeninden ortalama değerlerden çıkarılmış, merkezileştirilmiş vektörü göstersin. Hedef değişken asıl ilgilenilen ölçüm olduğundan ona standartlaştırma yapılmıyor.
 
 \[
   \mathbf{y_c} = \mathbf{y} - \bar{\mathbf{y}}\mathbf{1}_n
 \]
 
-Hedef değişken asıl ilgilenilen ölçüm olduğundan ona standartlaştırma yapılmıyor.
+Singular Value Decomposition (SVD) güçlü ve nümerik olarak stabil sonuç veren bir matrikleri ayrıştırma yöntemidir. Veri matriksi standardize edilmiş $n \times p$'lik $\mathbf{X}_s$ SVD ayrışımı şu şekilde tanımlanır:
+
+\[
+  \mathbf{X}_s = \mathbf{U\Sigma V^\top}
+\]
+
+Burada $\mathbf{U}$ $n \times n$'lik ortogonal matriks, $\mathbf{\Sigma}$ $n \times p$'lik dikdörtgen boyutunda diyagonal özdeğer matriksi ve $\mathbf{V^\top}$ $p \times p$'lik ortogonal özvektör matriksin transpozudur. $\mathbf{U}$ matriksinin sütunları $u_1, u_2, \cdots, u_n$ $\mathbf{X}_s$'in sol tekil vektörleridir. Aynı şekilde $\mathbf{V}$'in sütunları $v_1, v_2, \cdots, v_n$ $\mathbf{X}_s$'in sağ tekil vektörleridir. $\mathbf{\Sigma}$ ise $\mathbf{X}_s$'in rankı $r$ kadar olan($r=rank(\mathbf{X}_s)$) $\sigma_1, \sigma_2,\cdots, \sigma_r$($\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r$) negative olmayan ve büyükten küçüğe sıralanmış diyagonal dikdörtgen tekil değerler matriksdir. SVD temel olarak herhangi bir matriksi üç temel basit dönüşüm şeklinde ifade edildiğini söyler. Önce rotasyon veya yansıma sonra ölçeklendirme veya kesme(shearing)  ve son olarak tekrar rotasyon veya yansıma.
+
 
 %https://youtu.be/J337yXxTevs?si=RXu1awXV6ZZI8V2B
 %https://youtu.be/ZnCjNL-y27Y?si=D6zZmUz8LMxLlsNq
