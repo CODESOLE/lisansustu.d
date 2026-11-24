@@ -1,9 +1,10 @@
 \documentclass[12pt]{article}
 
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, bm}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{physics}
 \usepackage[hidelinks]{hyperref}
 \usepackage[turkish]{babel}
 \usepackage[titles]{tocloft}
@@ -99,8 +100,28 @@ Singular Value Decomposition (SVD) güçlü ve nümerik olarak stabil sonuç ver
   \mathbf{X}_s = \mathbf{U\Sigma V^\top}
 \]
 
-Burada $\mathbf{U}$ $n \times n$'lik ortogonal matriks, $\mathbf{\Sigma}$ $n \times p$'lik dikdörtgen boyutunda diyagonal özdeğer matriksi ve $\mathbf{V^\top}$ $p \times p$'lik ortogonal özvektör matriksin transpozudur. $\mathbf{U}$ matriksinin sütunları $u_1, u_2, \cdots, u_n$ $\mathbf{X}_s$'in sol tekil vektörleridir. Aynı şekilde $\mathbf{V}$'in sütunları $v_1, v_2, \cdots, v_n$ $\mathbf{X}_s$'in sağ tekil vektörleridir. $\mathbf{\Sigma}$ ise $\mathbf{X}_s$'in rankı $r$ kadar olan($r=rank(\mathbf{X}_s)$) $\sigma_1, \sigma_2,\cdots, \sigma_r$($\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r$) negative olmayan ve büyükten küçüğe sıralanmış diyagonal dikdörtgen tekil değerler matriksdir. SVD temel olarak herhangi bir matriksi üç temel basit dönüşüm şeklinde ifade edildiğini söyler. Önce rotasyon veya yansıma sonra ölçeklendirme veya kesme(shearing)  ve son olarak tekrar rotasyon veya yansıma.
+Burada $\mathbf{U}$ $n \times n$'lik ortogonal matriks, $\mathbf{\Sigma}$ $n \times p$'lik dikdörtgen boyutunda diyagonal özdeğer matriksi ve $\mathbf{V^\top}$ $p \times p$'lik ortogonal özvektör matriksin transpozudur. $\mathbf{U}$ matriksinin sütunları $u_1, u_2, \cdots, u_n$ $\mathbf{X}_s$'in sol tekil vektörleridir. Aynı şekilde $\mathbf{V}$'in sütunları $v_1, v_2, \cdots, v_n$ $\mathbf{X}_s$'in sağ tekil vektörleridir. $\mathbf{V}$ matriksindeki her j'inci sütun vektörü j'inci temel bileşen vektörünü ifade etmektedir($\mathbf{v}_j=\text{PC}_j$). $\mathbf{\Sigma}$ ise $\mathbf{X}_s$'in rankı $r$ kadar olan($r=rank(\mathbf{X}_s)$) $\sigma_1, \sigma_2,\cdots, \sigma_r$($\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r$) negative olmayan ve büyükten küçüğe sıralanmış diyagonal dikdörtgen tekil değerler matriksdir. SVD temel olarak herhangi bir matriksi üç temel basit dönüşüm şeklinde ifade edildiğini söyler. Önce rotasyon veya yansıma sonra ölçeklendirme veya kesme(shearing)  ve son olarak tekrar rotasyon veya yansıma. SVD, PCA'ın temel yöntemidir. SVD, bir matriksi, kare matriks olsun veya olmasın, varyasyon derecesine göre ayrıştırmaya yarar ve matriksi bu parçaların lineer kombinasyonu şeklinde ifade etmemizi sağlar.
 
+\[
+\mathbf{X}_s = \sigma_1 \mathbf{u}_1 \mathbf{v}_1^\top
+  + \sigma_2 \mathbf{u}_2 \mathbf{v}_2^\top
+  + \cdots
+  + \sigma_r \mathbf{u}_r \mathbf{v}_r^\top
+\]
+
+Böylece yorumlanabilirliğini arttırır. Daha sonra aşağıda anlatılacağı gibi bu bileşenleri matriksdeki özniteliklerdeki varyasyonlardan ne kadar sorumlu olduğuna göre seçip boyut indirgemesi sağlanır. Diğer bileşenler atılır.
+
+\vspace{1.5em}
+
+Temel bileşen eksenleri, merkezileştirilimiş tasarım matriksindeki veri noktalarının eksene iz düşümünden kaynaklanan varyasyonu maksimize edicek seçilde dönüştürülür. Diğer bir değişle PCA bir varyasyon maksimizasyon problemi gibi düşünebiliriz. $\Sigma$ varyans-kovaryans matriksi, $p$ tahmin edici sayısı, $x_i$ i' inci gözlem sayısı, $\mathbf{w}$ ise p boyutlu uzayda birim vektör olmak üzere:
+
+\begin{align*}
+  \mathbf{\Sigma} &= \frac{1}{n-1}\mathbf{X}_s^\top\mathbf{X}_s \\[1em]
+  \max_{\mathbf{w}_1 \in \mathbb{R}^p} \operatorname{Var}(\mathbf{X}_s\mathbf{w}_1) &= \frac{1}{n-1}\sum_{i=1}^{n} (\mathbf{w}_1^\top \mathbf{x}_i)^2 = \max_{\mathbf{w}_1 \in \mathbb{R}^p} \mathbf{w}_1^\top \mathbf{\Sigma} \mathbf{w}_1 = \lambda_1 \\[1em]
+  \text{s.t.} &\quad \Vert \mathbf{w}_1 \Vert_2 = 1, \quad \mathbf{w}_1^\top \mathbf{w}_1 = 1
+\end{align*}
+
+Buradaki $\mathbf{w}_1$, $\mathbf{X}_s$'de varyasyonu en çok yakalayan birinci temel bileşen eksenini temsil eden birim vektördür. Bu eksenlerden $p$ adet vardır ve hepsi bir birine diktir ($\mathbf{w}_i \cdot \mathbf{w}_j=0$). Bu eksenler büyükten küçüğe doğru varyasyonu maksimize edicek şekilde hesaplanır($\text{PC}_1 > \text{PC}_2 > \cdots > \text{PC}_p$). Bu eksenlere temel bileşen yükleri veya temel yönlerde denir. Bu temel eksenler $p$ boyutlu tahmin edici uzayında veri kümesinin serpişme miktarını en çok yakaladığı eksenleri ifade eder.
 
 %https://youtu.be/J337yXxTevs?si=RXu1awXV6ZZI8V2B
 %https://youtu.be/ZnCjNL-y27Y?si=D6zZmUz8LMxLlsNq
