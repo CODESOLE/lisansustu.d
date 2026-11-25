@@ -116,12 +116,41 @@ Böylece yorumlanabilirliğini arttırır. Daha sonra aşağıda anlatılacağı
 Temel bileşen eksenleri, merkezileştirilimiş tasarım matriksindeki veri noktalarının eksene iz düşümünden kaynaklanan varyasyonu maksimize edicek seçilde dönüştürülür. Diğer bir değişle PCA bir varyasyon maksimizasyon problemi gibi düşünebiliriz. $\Sigma$ varyans-kovaryans matriksi, $p$ tahmin edici sayısı, $x_i$ i' inci gözlem sayısı, $\mathbf{w}$ ise p boyutlu uzayda birim vektör olmak üzere:
 
 \begin{align*}
-  \mathbf{\Sigma} &= \frac{1}{n-1}\mathbf{X}_s^\top\mathbf{X}_s \\[1em]
-  \max_{\mathbf{w}_1 \in \mathbb{R}^p} \operatorname{Var}(\mathbf{X}_s\mathbf{w}_1) &= \frac{1}{n-1}\sum_{i=1}^{n} (\mathbf{w}_1^\top \mathbf{x}_i)^2 = \max_{\mathbf{w}_1 \in \mathbb{R}^p} \mathbf{w}_1^\top \mathbf{\Sigma} \mathbf{w}_1 = \lambda_1 \\[1em]
+  \mathbf{S} &= \frac{1}{n-1}\mathbf{X}_s^\top\mathbf{X}_s \\[1em]
+  \max_{\mathbf{w}_1 \in \mathbb{R}^p} \operatorname{Var}(\mathbf{X}_s\mathbf{w}_1) &= \frac{1}{n-1}\sum_{i=1}^{n} (\mathbf{w}_1^\top \mathbf{x}_i)^2 = \max_{\mathbf{w}_1 \in \mathbb{R}^p} \mathbf{w}_1^\top \mathbf{S} \mathbf{w}_1 = \lambda_1 \\[1em]
   \text{s.t.} &\quad \Vert \mathbf{w}_1 \Vert_2 = 1, \quad \mathbf{w}_1^\top \mathbf{w}_1 = 1
 \end{align*}
 
-Buradaki $\mathbf{w}_1$, $\mathbf{X}_s$'de varyasyonu en çok yakalayan birinci temel bileşen eksenini temsil eden birim vektördür. Bu eksenlerden $p$ adet vardır ve hepsi bir birine diktir ($\mathbf{w}_i \cdot \mathbf{w}_j=0$). Bu eksenler büyükten küçüğe doğru varyasyonu maksimize edicek şekilde hesaplanır($\text{PC}_1 > \text{PC}_2 > \cdots > \text{PC}_p$). Bu eksenlere temel bileşen yükleri veya temel yönlerde denir. Bu temel eksenler $p$ boyutlu tahmin edici uzayında veri kümesinin serpişme miktarını en çok yakaladığı eksenleri ifade eder.
+Buradaki $\mathbf{w}_1$, $\mathbf{X}_s$'de varyasyonu en çok yakalayan birinci temel bileşen eksenini temsil eden birim vektördür. Bu eksenlerden $p$ adet vardır ve hepsi bir birine diktir ($\mathbf{w}_i \cdot \mathbf{w}_j=0$). Bu eksenler büyükten küçüğe doğru varyasyonu maksimize edicek şekilde hesaplanır($\text{PC}_1 \ge \text{PC}_2 \ge \cdots \ge \text{PC}_p$). Bu eksenlere temel bileşen yükleri veya temel yönlerde denir. Bu temel eksenler $p$ boyutlu tahmin edici uzayında veri kümesinin serpişme miktarını en çok yakaladığı eksenleri ifade eder.
+
+\vspace{1.5em}
+
+Standartlaştırılmış $\mathbf{X}_s$ matriksinin toplam varyansı tekil değerlerinin toplamına eşittir. $i$'inci temel bileşen ekseninin açıkaldığı varyans miktarı $i$'inci bileşenin tekil değerinin karesine eşittir.
+
+\begin{gather*}
+  \operatorname{trace}(\mathbf{X}_s^\top\mathbf{X}_s) = \sum_{i=1}^{r} \sigma_i^2 \\[1em]
+  \operatorname{Var}(\text{PC}_i)=\sigma_i^2 \\[1em]
+  \text{Var}(\text{PC}_j)(\%)=\frac{\sigma_j}{\sum_{i=1}^{p}\sigma_i}\times 100
+\end{gather*}
+
+Standartlaştırılmış $\mathbf{X}_s$ matriksinin SVD ayrışımını $\mathbf{X}_s = \mathbf{U\Sigma V^\top}$, örneklem kovaryans ifadesinde yerine koyarsak:
+
+\begin{align*}
+  \mathbf{S} &= \frac{1}{n-1}\mathbf{X}_s^\top\mathbf{X}_s \\[1em]
+  \mathbf{S} &= \frac{1}{n-1}(V\Sigma^{\top}U^{\top})(U\Sigma V^{\top}) \\[1em]
+               &=\frac{1}{n-1}V\Sigma^{\top}\Sigma V^{\top} \\[1em]
+               &=\frac{1}{n-1}V\Sigma^2 V^{\top}
+\end{align*}
+
+$\Sigma^{\top}\Sigma$ matriksi $p \times p$'lik köşegen matriksi olduğundan çarpımları $\Sigma^2$ matriksini verir ve köşegenleri tekil değerlerin karesidir ($\sigma^2$).
+
+\newpage
+
+Her bir bileşene denk gelen özdeğer ise:
+
+\begin{gather*}
+  \lambda_j=\frac{\sigma_j^2}{n-1}
+\end{gather*}
 
 %https://youtu.be/J337yXxTevs?si=RXu1awXV6ZZI8V2B
 %https://youtu.be/ZnCjNL-y27Y?si=D6zZmUz8LMxLlsNq
