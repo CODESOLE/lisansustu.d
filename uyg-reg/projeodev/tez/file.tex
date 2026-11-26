@@ -100,7 +100,7 @@ Singular Value Decomposition (SVD) güçlü ve nümerik olarak stabil sonuç ver
   \mathbf{X}_s = \mathbf{U\Sigma V^\top}
 \]
 
-Burada $\mathbf{U}$ $n \times n$'lik ortogonal matriks, $\mathbf{\Sigma}$ $n \times p$'lik dikdörtgen boyutunda diyagonal özdeğer matriksi ve $\mathbf{V^\top}$ $p \times p$'lik ortogonal özvektör matriksin transpozudur. $\mathbf{U}$ matriksinin sütunları $u_1, u_2, \cdots, u_n$ $\mathbf{X}_s$'in sol tekil vektörleridir. Aynı şekilde $\mathbf{V}$'in sütunları $v_1, v_2, \cdots, v_n$ $\mathbf{X}_s$'in sağ tekil vektörleridir. $\mathbf{V}$ matriksindeki her j'inci sütun vektörü j'inci temel bileşen vektörünü ifade etmektedir($\mathbf{v}_j=\text{PC}_j$). $\mathbf{\Sigma}$ ise $\mathbf{X}_s$'in rankı $r$ kadar olan($r=rank(\mathbf{X}_s)$) $\sigma_1, \sigma_2,\cdots, \sigma_r$($\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r$) negative olmayan ve büyükten küçüğe sıralanmış diyagonal dikdörtgen tekil değerler matriksdir. SVD temel olarak herhangi bir matriksi üç temel basit dönüşüm şeklinde ifade edildiğini söyler. Önce rotasyon veya yansıma sonra ölçeklendirme veya kesme(shearing)  ve son olarak tekrar rotasyon veya yansıma. SVD, PCA'ın temel yöntemidir. SVD, bir matriksi, kare matriks olsun veya olmasın, varyasyon derecesine göre ayrıştırmaya yarar ve matriksi bu parçaların lineer kombinasyonu şeklinde ifade etmemizi sağlar.
+Burada $\mathbf{U}$ $n \times n$'lik ortogonal matriks($\mathbf{U}^\top\mathbf{U}=\mathbf{U}\mathbf{U}^\top=\mathbf{I}$), $\mathbf{\Sigma}$ $n \times p$'lik dikdörtgen boyutunda diyagonal özdeğer matriksi ve $\mathbf{V^\top}$ $p \times p$'lik ortogonal özvektör matriksin transpozudur($\mathbf{V}^\top\mathbf{V}=\mathbf{V}\mathbf{V}^\top=\mathbf{I}$). $\mathbf{U}$ matriksinin sütunları $\mathbf{u_1}, \mathbf{u_2}, \cdots, \mathbf{u_n}$ $\mathbf{X}_s$'in sol tekil vektörleridir. Aynı şekilde $\mathbf{V}$'in sütunları $\mathbf{v_1}, \mathbf{v_2}, \cdots, \mathbf{v_n}$ $\mathbf{X}_s$'in sağ tekil vektörleridir. $\mathbf{V}$ matriksindeki her j'inci sütun vektörü j'inci temel bileşen vektörünü ifade etmektedir($\mathbf{v}_j=\text{PC}_j$). $\mathbf{\Sigma}$ ise $\mathbf{X}_s$'in rankı $r$ kadar olan($\text{r}=\text{rank}(\mathbf{X}_s)$) $\sigma_1, \sigma_2,\cdots, \sigma_r$($\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r$) negative olmayan ve büyükten küçüğe sıralanmış diyagonal dikdörtgen tekil değerler matriksdir. SVD temel olarak herhangi bir matriksi üç temel basit dönüşüm şeklinde ifade edildiğini söyler. Önce rotasyon veya yansıma sonra ölçeklendirme veya kesme(shearing)  ve son olarak tekrar rotasyon veya yansıma. SVD, PCA'ın temel yöntemidir. SVD, bir matriksi, kare matriks olsun veya olmasın, varyasyon derecesine göre ayrıştırmaya yarar ve matriksi bu parçaların lineer kombinasyonu şeklinde ifade etmemizi sağlar.
 
 \[
 \mathbf{X}_s = \sigma_1 \mathbf{u}_1 \mathbf{v}_1^\top
@@ -113,7 +113,7 @@ Böylece yorumlanabilirliğini arttırır. Daha sonra aşağıda anlatılacağı
 
 \vspace{1.5em}
 
-Temel bileşen eksenleri, merkezileştirilimiş tasarım matriksindeki veri noktalarının eksene iz düşümünden kaynaklanan varyasyonu maksimize edicek seçilde dönüştürülür. Diğer bir değişle PCA bir varyasyon maksimizasyon problemi gibi düşünebiliriz. $\Sigma$ varyans-kovaryans matriksi, $p$ tahmin edici sayısı, $x_i$ i' inci gözlem sayısı, $\mathbf{w}$ ise p boyutlu uzayda birim vektör olmak üzere:
+Temel bileşen eksenleri, merkezileştirilimiş tasarım matriksindeki veri noktalarının eksene iz düşümünden kaynaklanan varyasyonu maksimize edicek seçilde dönüştürülür. Diğer bir değişle PCA bir varyasyon maksimizasyon problemi gibi düşünebiliriz. $\Sigma$ varyans-kovaryans matriksi, $p$ tahmin edici sayısı, $x_i$ i' inci gözlem nokta verisini(yani standartlaştırılmış veri matriksi $\mathbf{X}_s$'te i'inci satırı), $\mathbf{w}$ ise p boyutlu uzayda birim vektör olmak üzere:
 
 \begin{align*}
   \mathbf{S} &= \frac{1}{n-1}\mathbf{X}_s^\top\mathbf{X}_s \\[1em]
@@ -121,7 +121,7 @@ Temel bileşen eksenleri, merkezileştirilimiş tasarım matriksindeki veri nokt
   \text{s.t.} &\quad \Vert \mathbf{w}_1 \Vert_2 = 1, \quad \mathbf{w}_1^\top \mathbf{w}_1 = 1
 \end{align*}
 
-Buradaki $\mathbf{w}_1$, $\mathbf{X}_s$'de varyasyonu en çok yakalayan birinci temel bileşen eksenini temsil eden birim vektördür. Bu eksenlerden $p$ adet vardır ve hepsi bir birine diktir ($\mathbf{w}_i \cdot \mathbf{w}_j=0$). Bu eksenler büyükten küçüğe doğru varyasyonu maksimize edicek şekilde hesaplanır($\text{PC}_1 \ge \text{PC}_2 \ge \cdots \ge \text{PC}_p$). Bu eksenlere temel bileşen yükleri veya temel yönlerde denir. Bu temel eksenler $p$ boyutlu tahmin edici uzayında veri kümesinin serpişme miktarını en çok yakaladığı eksenleri ifade eder.
+Buradaki $\mathbf{w}_1$, $\mathbf{X}_s$'de varyasyonu en çok yakalayan birinci temel bileşen eksenini temsil eden birim vektördür. Bu eksenlerden $p$ adet vardır ve hepsi bir birine diktir ($\mathbf{w}_i \cdot \mathbf{w}_j=0$). $p$ boyutlu ve $n$ adet her bir gözlem noktasını $\mathbf{w}_i$ birim vektörü üzerine iz düşümünün büyüklüğünün karesini toplayarak birim verktörün o eğimdeki yakaladığı varyasonu hesaplıyoruz. Bu eksenler büyükten küçüğe doğru varyasyonu maksimize edicek şekilde hesaplanır($\text{PC}_1 \ge \text{PC}_2 \ge \cdots \ge \text{PC}_p$). Bu eksenlere temel bileşen yükleri veya temel yönlerde denir. Bu temel eksenler $p$ boyutlu tahmin edici uzayında veri kümesinin serpişme miktarını en çok yakaladığı eksenleri ifade eder.
 
 \vspace{1.5em}
 
@@ -144,13 +144,34 @@ Standartlaştırılmış $\mathbf{X}_s$ matriksinin SVD ayrışımını $\mathbf
 
 $\Sigma^{\top}\Sigma$ matriksi $p \times p$'lik köşegen matriksi olduğundan çarpımları $\Sigma^2$ matriksini verir ve köşegenleri tekil değerlerin karesidir ($\sigma^2$).
 
-\newpage
+\vspace{1.5em}
 
 Her bir bileşene denk gelen özdeğer ise:
 
 \begin{gather*}
   \lambda_j=\frac{\sigma_j^2}{n-1}
 \end{gather*}
+
+Temel bileşen eksenleri, örneklem kovaryans matriksine($\mathbf{S}$) (veya bu durumda standartlaştırılmış tasarım matriksine) denk gelen özvektörlerdir ve bu özvektörlere bağlı özdeğerler o temel bileşen eksenin açıkladığı varyansı ifade eder.
+
+\vspace{1.5em}
+
+Temel bileşen eksenlerinin doğrultusu hesaplandıktan sonra o temel bileşen eksenine ait skorlar hesaplanabilir. Skorlar $j$'inci temel eksen olan $\mathbf{v}_j$ vektörünün üzerine $\mathbf{x}_i$'inci gözlem noktasını ($\mathbf{X}_s$'in $i$'inci satır vektörünü) ifade eden vektörün iz düşümü alınarak hesaplanır. Tüm temel bileşen skorlarını tutan matrikse $\mathbf{Z}$ dersek, veri matriksi $\mathbf{X}_s$'yi temel eksenleri sütun vektör olarak tutan $\mathbf{V}$'nin üzerine iz düşümünü, SVD kullanarak matriks formatında şu şekilde ifade edebiliriz:
+
+\begin{align*}
+  \mathbf{Z} &= \mathbf{X}_s \mathbf{V}= \begin{bmatrix}
+\rule[0.5ex]{1.5em}{0.4pt} & \mathbf{x_1} & \rule[0.5ex]{1.5em}{0.4pt} \\
+& \vdots & \\
+\rule[0.5ex]{1.5em}{0.4pt} & \mathbf{x_n} & \rule[0.5ex]{1.5em}{0.4pt}
+\end{bmatrix}
+\begin{bmatrix}
+| & & | \\
+\mathbf{v_1} & \cdots & \mathbf{v_n} \\
+| & & |
+\end{bmatrix} \\[1em]
+             &=(\mathbf{U}\Sigma \mathbf{V^\top})\mathbf{V} \\[1em]
+             &=\mathbf{U}\Sigma
+\end{align*}
 
 %https://youtu.be/J337yXxTevs?si=RXu1awXV6ZZI8V2B
 %https://youtu.be/ZnCjNL-y27Y?si=D6zZmUz8LMxLlsNq
